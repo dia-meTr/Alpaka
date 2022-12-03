@@ -25,4 +25,7 @@ for x in myresult:
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print('PyCharm')
+    window = tk.Tk()
+    m = Main(window)
+
+    window.mainloop()
