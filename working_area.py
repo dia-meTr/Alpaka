@@ -7,11 +7,11 @@ from delete_tab import DeleteTab
 
 
 class Main(ttk.Frame):
-    def __init__(self, root):
+    def __init__(self, root, mydb):
         super().__init__()
         tabControl = ttk.Notebook(root)
 
-        self.tab_select = SelectTab(tabControl)
+        self.tab_select = SelectTab(tabControl, mydb)
         self.tab_insert = InsertTab(tabControl)
         self.tab_update = UpdateTab(tabControl)
         self.tab_delete = DeleteTab(tabControl)

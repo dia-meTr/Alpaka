@@ -1,2 +1,5 @@
 tabs.py
 constants.py
+.idea
+__pycashe__/
+test.py
