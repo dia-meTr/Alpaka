@@ -8,6 +8,7 @@ class Table(Frame):
         super().__init__(root, *args, **kwargs)
 
     def make_view(self, columns, table):
+        self.clear()
 
         tree = ttk.Treeview(self, column=columns, show='headings')
         tree.pack(expand=True, fill='both', side=tk.LEFT)
@@ -22,3 +23,12 @@ class Table(Frame):
         scrollbar = ttk.Scrollbar(self, orient=tk.VERTICAL, command=tree.yview)
         tree.configure(yscroll=scrollbar.set)
         scrollbar.pack(fill=tk.Y, side=tk.RIGHT)
+
+    def clear(self):
+        # destroy all widgets from frame
+        for widget in self.winfo_children():
+            widget.destroy()
+
+        # this will clear frame and frame will be empty
+        # if you want to hide the empty panel then
+        # self.pack_forget()
