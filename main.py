@@ -1,10 +1,7 @@
 import mysql.connector
 from constants import *
 import tkinter as tk
-from tkinter import ttk
 from working_area import Main
-from table import Table
-
 
 mydb = mysql.connector.connect(
     host=connection_params['host'],
@@ -12,23 +9,12 @@ mydb = mysql.connector.connect(
     password=connection_params['password'],
     database=connection_params['database']
 )
+my_cursor = mydb.cursor()
 
-print(mydb)
-
-mycursor = mydb.cursor()
-
-"""
-mycursor.execute("SELECT * from drink")
-
-myresult = mycursor.fetchall()
-
-for x in myresult:
-    print(x)
-"""
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     window = tk.Tk()
-    m = Main(window, mycursor)
+    window.geometry("1100x600")
+    m = Main(window, my_cursor)
     m.pack()
 
     window.mainloop()
