@@ -28,7 +28,3 @@ class Table(Frame):
         # destroy all widgets from frame
         for widget in self.winfo_children():
             widget.destroy()
-
-        # this will clear frame and frame will be empty
-        # if you want to hide the empty panel then
-        # self.pack_forget()
