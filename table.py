@@ -28,3 +28,26 @@ class Table(Frame):
         # destroy all widgets from frame
         for widget in self.winfo_children():
             widget.destroy()
+
+
+def get_tables(cursor):
+    cursor.execute("SHOW TABLES")
+    result = cursor.fetchall()
+    tables = [x[0] for x in result]
+    return tables
+
+
+def get_columns(table, cursor):
+    columns = []
+
+    # If table variable is not empty:
+    if table.get() != '':
+        # Executing SHOW columns... request
+        cursor.execute(f"SHOW columns FROM `{table.get()}`")
+        res = cursor.fetchall()
+        # print(res)
+
+        # Creating list with columns
+        columns = [x[0] for x in res]
+
+    return columns
