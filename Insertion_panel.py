@@ -1,6 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
 from table import get_tables
+from mysql.connector import FieldType
+from constants import mysql_types
+from DateTimePicker import DateTimePicker
 
 
 class Field(tk.Frame):
@@ -41,6 +44,10 @@ class Field(tk.Frame):
             referenced_to = self.get_relation()
             self.block = ttk.Combobox(self, values=referenced_to, textvariable=self.value)
 
+        elif self.type == b'date':
+            self.block = tk.Label(self, text="")
+            extra_block = tk.Button(self, text="SELECT DATE", command=lambda: self.ask_date(True, False, False))
+            extra_block.grid(row=0, column=3)
         else:
             self.block = tk.Entry(self, textvariable=self.value)
 
@@ -73,9 +80,30 @@ class Field(tk.Frame):
         elif value == '' and self.null != 'NO':
             value = None
 
+        print("Column {} has type {}".format(self.field_name, FieldType.get_info(self.type)))
+
         if self.type == 'int':
             value = int(value)
         elif self.type == 'float':
             value = float(value)
 
         return self.field_name, value
+
+    def check_type(self, value):
+        type_group = mysql_types[self.type]
+
+        if type_group == 'number':
+            value = int(value)
+        elif type_group == 'float':
+            value = float(value)
+
+
+        return value
+
+    def ask_date(self, date, time, days):
+        m = DateTimePicker(self.get_data, date, time, days)
+        #m.pack()
+
+    def get_data(self, date):
+        self.value = date
+
