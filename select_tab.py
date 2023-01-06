@@ -3,7 +3,8 @@ from tkinter import ttk
 from tkinter import Frame
 from table import Table, get_tables, get_columns
 from sidebars import SidebarSelect
-from filter_data import Filter
+from select_components.filter_data import Filter
+from select_components.sort_data import Sorter
 
 
 class SelectTab(Frame):
@@ -15,13 +16,9 @@ class SelectTab(Frame):
         self.filter_chooser = None
         self.bt_add_filter = None
         self.filters = []
-        self.ch_reverse = None
-        self.cb_order_by = None
         self.cursor = my_cursor
         self.table = tk.StringVar()
-        self.order_by = tk.StringVar()
-        self.reverse = tk.BooleanVar()
-        self.table.trace('w', self.refresh_columns)
+        self.table.trace('w', lambda *args: self.refresh_columns())
         columns = ('Drink_Name', 'Price', 'Size', 'Type')
 
         # Rows&Columns configuration
@@ -39,6 +36,7 @@ class SelectTab(Frame):
         self.table_view.grid(row=1, column=0, columnspan=2, sticky="nsew")
 
         # Initialising UIs
+        self.sort_block = Sorter(self.m_space, self.cursor, self.table)
         self.side_bar.init_ui(columns)
         self.init_ui()
 
@@ -55,22 +53,12 @@ class SelectTab(Frame):
         cb_chose_table.grid(row=0)
 
         # Order by
-        lb_order_by = tk.Label(self.m_space, text='Order by:')
-        lb_order_by.grid(row=1, column=0)
-
-        self.cb_order_by = ttk.Combobox(self.m_space, values=get_columns(self.table, self.cursor),
-                                        textvariable=self.order_by)
-        self.cb_order_by.grid(row=1, column=1)
-
-        self.ch_reverse = tk.Checkbutton(self.m_space, text="Reverse order", variable=self.reverse)
-        self.ch_reverse.grid(row=1, column=2)
+        self.sort_block.init_ui()
+        self.sort_block.grid(row=1)
 
         # WHERE
         lb_where = tk.Label(self.m_space, text='Config filters')
         lb_where.grid(row=2, column=0)
-
-        # self.bt_add_filter = tk.Button(self.m_space, text='+', command=self.add_filter)
-        # self.bt_add_filter.grid(row=3, column=0)
 
         self.filter_chooser = Filter(self.m_space, self.cursor)
         self.filter_chooser.grid(row=3, column=0)
@@ -95,13 +83,7 @@ class SelectTab(Frame):
 
         sql_request += self.filter_chooser.get_str()
 
-        print(self.order_by.get())
-
-        if self.order_by.get() != '':
-            sql_request += f" ORDER BY `{self.order_by.get()}`"
-
-        if self.reverse.get():
-            sql_request += " DESC"
+        sql_request += self.sort_block.get_query_piece()
 
         # Execute SQL request
         print(sql_request)
@@ -111,7 +93,7 @@ class SelectTab(Frame):
         # Build a table
         self.table_view.make_view(columns, result)
 
-    def refresh_columns(self, *args):
+    def refresh_columns(self):
         """
         refreshing columns list for left sidebar and order_by checkbox
         """
@@ -121,4 +103,4 @@ class SelectTab(Frame):
         # Updating sidebar
         self.side_bar.init_ui(columns)
 
-        self.cb_order_by['values'] = get_columns(self.table, self.cursor)
+        self.sort_block.refresh()
