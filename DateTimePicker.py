@@ -3,25 +3,23 @@ from tkcalendar import *
 
 
 class DateTimePicker(tk.Toplevel):
-    def __init__(self, func, date, time, days):
+    def __init__(self, func, option):
         super().__init__()
         self.func = func
-        self.date_needed = date
-        self.time_needed = time
-        self.days_needed = days
+        self.option = option
 
         self.cal = None
 
         self.time = [tk.StringVar(), tk.StringVar(), tk.StringVar()]
         self.days = [tk.StringVar(), tk.StringVar(), tk.StringVar()]
 
-        if self.date_needed:
+        if self.option == 'DATETIME' or self.option == 'DATE':
             self.data_chooser()
 
-        if self.time_needed:
+        if self.option == 'DATETIME' or self.option == 'TIME' or self.option == 'TIMESTAMP':
             self.time_chooser()
 
-        if self.days_needed:
+        if self.option == 'TIMESTAMP':
             self.days_chooser()
 
         submit_button = tk.Button(self, text="Submit", padx=10, pady=10,
@@ -73,7 +71,7 @@ class DateTimePicker(tk.Toplevel):
         msg = tk.Label(self, text="Years  Months  Days", font=("Times", 12))
         msg.pack(side=tk.TOP)
 
-    def get_data(self):
+    def get_date(self):
         date = self.cal.selection_get()
         return date.strftime('%Y-%m-%d')
 
@@ -91,15 +89,13 @@ class DateTimePicker(tk.Toplevel):
 
     def display_msg(self):
         res = ''
-        if self.date_needed and self.time_needed:
-            res = self.get_data() + ' ' + self.get_time()
-        elif self.days_needed and self.time_needed:
-            res = self.get_data() + ' ' + self.get_time()
-        elif self.date_needed:
-            res = self.get_data()
-        elif self.days_needed:
-            res = self.get_days()
-        elif self.time_needed:
+        if self.option == 'DATETIME':
+            res = self.get_date() + ' ' + self.get_time()
+        elif self.option == 'TIMESTAMP':
+            res = self.get_date() + ' ' + self.get_time()
+        elif self.option == 'DATE':
+            res = self.get_date()
+        elif self.option == 'TIME':
             res = self.get_time()
 
         print(res)

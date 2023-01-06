@@ -1,8 +1,10 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
 from table import Table, get_columns, get_tables
 from sidebars import SidebarSelect
 from Insertion_panel import Field
+from connector import get_table_info
 
 
 class InsertTab(ttk.Frame):
@@ -47,8 +49,7 @@ class InsertTab(ttk.Frame):
         # If table variable is not empty:
         if self.table.get() != '':
             # Executing SHOW columns... request
-            self.cursor.execute(f"SHOW columns FROM `{self.table.get()}`")
-            res = self.cursor.fetchall()
+            res = get_table_info(self.table.get())
             # print(res)
 
             for el in self.fields:
@@ -65,22 +66,25 @@ class InsertTab(ttk.Frame):
     def get_query(self):
         args = []
 
-        try:
-            for el in self.fields:
+        for el in self.fields:
+            try:
+
                 arg = el.get_value()
                 if arg is not None:
                     args.append(arg)
-        except Exception as e:
-            print(e.args)
-            return
+            except Exception as e:
+                print(e.args)
+                messagebox.showerror("Error", e.args[0])
+                return
 
         columns = [row[0] for row in args]
         values = [row[1] for row in args]
-        values = ['3',3,3,'3']
+        n = len(columns)
 
-        query = "INSERT INTO `drink` (Drink_Name, Price, Size, Type) " \
+        query = "INSERT INTO `" + self.table.get() + "` (`" + \
+                '`, `'.join(columns) + "`) " \
                 "VALUES (" + \
-                ', '.join(["%s"] * 4) + ");"
+                ', '.join(["%s"] * n) + ");"
 
         print(query, (columns, values))
 

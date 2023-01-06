@@ -2,8 +2,9 @@ import tkinter as tk
 from tkinter import ttk
 from table import get_tables
 from mysql.connector import FieldType
-from constants import mysql_types
+from constants import type_groups
 from DateTimePicker import DateTimePicker
+from connector import get_relation
 
 
 class Field(tk.Frame):
@@ -18,6 +19,7 @@ class Field(tk.Frame):
 
         self.field_name = field_name
         self.type = type_
+        self.group_type = type_groups[type_]
         self.null = null
         self.key = key
         self.default = default
@@ -33,18 +35,16 @@ class Field(tk.Frame):
         """
         function that creates view of field depending on information about it
         """
-        self.title = tk.Label(self, text=f'{self.field_name}\n({self.type}): ')
+        self.title = tk.Label(self, text=f'{self.field_name}\n({self.group_type}): ')
 
         if self.extra == 'auto_increment':
             self.block = tk.Label(self, text='Auto Increment')
 
         elif self.key == 'MUL':
-            # print(self.field_name)
-            # print(self.table)
-            referenced_to = self.get_relation()
+            referenced_to = get_relation(self.table, self.field_name)
             self.block = ttk.Combobox(self, values=referenced_to, textvariable=self.value)
 
-        elif self.type == b'date':
+        elif self.group_type == 'datetime':
             self.block = tk.Label(self, text="")
             extra_block = tk.Button(self, text="SELECT DATE", command=lambda: self.ask_date(True, False, False))
             extra_block.grid(row=0, column=3)
@@ -54,56 +54,37 @@ class Field(tk.Frame):
         self.title.grid(row=0, column=0)
         self.block.grid(row=0, column=1)
 
-    def get_relation(self):
-        """
-        function to get referenced columns
-        """
-        self.cursor.execute("SELECT `REFERENCED_TABLE_NAME`, `REFERENCED_COLUMN_NAME` "
-                            "FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE`"
-                            f"WHERE `TABLE_NAME` = '{self.table}'  "
-                            f"AND `COLUMN_NAME` = '{self.field_name}'")
-        res = self.cursor.fetchall()[0]
-        # print(res)
-
-        self.cursor.execute(f"SELECT `{res[1]}` FROM `{res[0]}`")
-
-        return self.cursor.fetchall()
-
     def get_value(self):
         value = self.value.get()
         if self.extra == 'auto_increment':
             return None
         elif value == '' and self.default is not None:
             value = self.default
-        elif value == '' and self.null == 'NO':
+        elif value == '' and self.null == 0:
             raise Exception(f"Sorry, column '{self.field_name}' can't be NULL")
-        elif value == '' and self.null != 'NO':
+        elif value == '' and self.null != 0:
             value = None
 
-        print("Column {} has type {}".format(self.field_name, FieldType.get_info(self.type)))
-
-        if self.type == 'int':
-            value = int(value)
-        elif self.type == 'float':
-            value = float(value)
+        value = self.check_type(value)
 
         return self.field_name, value
 
     def check_type(self, value):
-        type_group = mysql_types[self.type]
 
-        if type_group == 'number':
-            value = int(value)
-        elif type_group == 'float':
-            value = float(value)
-
+        try:
+            if self.group_type == 'number':
+                value = int(value)
+            elif self.group_type == 'float':
+                value = float(value)
+        except ValueError:
+            raise Exception(f"Sorry, column '{self.field_name}' have to be {self.group_type}")
 
         return value
 
-    def ask_date(self, date, time, days):
-        m = DateTimePicker(self.get_data, date, time, days)
+    def ask_date(self):
+        m = DateTimePicker(self.get_data, self.type)
         #m.pack()
 
     def get_data(self, date):
-        self.value = date
-
+        self.value.set(date)
+        self.block['text'] = date
