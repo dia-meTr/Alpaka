@@ -36,8 +36,8 @@ class Sorter(tk.Frame):
         if self.column.get() != '':
             result += f" ORDER BY `{self.column.get()}`"
 
-        if self.reverse.get():
-            result += " DESC"
+            if self.reverse.get():
+                result += " DESC"
 
         return result
 
