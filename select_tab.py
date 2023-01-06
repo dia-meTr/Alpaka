@@ -13,10 +13,8 @@ class SelectTab(Frame):
     """
     def __init__(self, root, my_cursor):
         super().__init__(root)
-        self.filter_chooser = None
-        self.bt_add_filter = None
-        self.filters = []
         self.cursor = my_cursor
+
         self.table = tk.StringVar()
         self.table.trace('w', lambda *args: self.refresh_columns())
         columns = ('Drink_Name', 'Price', 'Size', 'Type')
@@ -36,7 +34,9 @@ class SelectTab(Frame):
         self.table_view.grid(row=1, column=0, columnspan=2, sticky="nsew")
 
         # Initialising UIs
-        self.sort_block = Sorter(self.m_space, self.cursor, self.table)
+        self.sort_block = Sorter(self.m_space, self.cursor, self.table.get())
+        self.filter_chooser = None
+
         self.side_bar.init_ui(columns)
         self.init_ui()
 
@@ -53,6 +53,7 @@ class SelectTab(Frame):
         cb_chose_table.grid(row=0)
 
         # Order by
+        self.sort_block = Sorter(self.m_space, self.cursor, self.table.get())
         self.sort_block.init_ui()
         self.sort_block.grid(row=1)
 
@@ -60,7 +61,9 @@ class SelectTab(Frame):
         lb_where = tk.Label(self.m_space, text='Config filters')
         lb_where.grid(row=2, column=0)
 
-        self.filter_chooser = Filter(self.m_space, self.cursor)
+        self.filter_chooser = Filter(self.m_space, [])
+        # self.filter_chooser.grid(row=3, column=0)
+        self.filter_chooser.init_ui()
         self.filter_chooser.grid(row=3, column=0)
 
         # SELECT button
@@ -98,9 +101,11 @@ class SelectTab(Frame):
         refreshing columns list for left sidebar and order_by checkbox
         """
         # Get columns in table
-        columns = get_columns(self.table, self.cursor)
+        columns = get_columns(self.table.get(), self.cursor)
 
         # Updating sidebar
         self.side_bar.init_ui(columns)
 
-        self.sort_block.refresh()
+        self.sort_block.refresh(self.table.get(), columns)
+
+        self.filter_chooser.refresh(columns)

@@ -1,53 +1,21 @@
 import tkinter as tk
 from tkinter import ttk
 from table import get_columns
-
-
-class FilterBlock(tk.Frame):
-    """
-
-    """
-    def __init__(self, root, my_cursor):
-        super().__init__(root)
-        self.cursor = my_cursor
-        self.table = tk.StringVar()
-        self.table.set('drink')
-        self.operators = {'Equal': '=',
-                          'Not equal': '!=',
-                          'Greater than': '>',
-                          'Greater than or equal': '=>',
-                          'Less than': '<',
-                          'Less than or equal': '=<',
-                          'Between a certain range': 'BETWEEN',
-                          'Specify multiple possible values for a column': 'IN'}
-
-        self.column1 = tk.StringVar()
-        filter_by = ttk.Combobox(self, values=get_columns(self.table, self.cursor), textvariable=self.column1)
-        filter_by.grid(row=3, column=1)
-
-        self.operator_str = tk.StringVar()
-        operator = ttk.Combobox(self, values=list(self.operators.keys()), textvariable=self.operator_str)
-        operator.grid(row=4, column=1)
-
-        self.value = tk.StringVar()
-        compare_with = ttk.Combobox(self, values=get_columns(self.table, self.cursor), textvariable=self.value)
-        compare_with.grid(row=5, column=1)
-
-    def is_full(self):
-        return self.column1.get() != '' and self.operator_str.get() != '' and self.value.get() != ''
-
-    def get_statement(self):
-        return f'{self.column1.get()} {self.operators[self.operator_str.get()]} {self.value.get()}'
+from select_components.filter_block import FilterBlock
 
 
 class FiltersHolder(tk.Frame):
-    def __init__(self, root, my_cursor):
+    def __init__(self, root, columns):
         super().__init__(root, relief=tk.RAISED, borderwidth=5)
-        self.cursor = my_cursor
+        self.columns = columns
         self.blocks = []
         self.count = 1
+        self.button = None
 
-        block = FilterBlock(self, self.cursor)
+        self.init_ui()
+
+    def init_ui(self):
+        block = FilterBlock(self, self.columns)
         block.grid(row=0, column=self.count, rowspan=4)
         self.blocks.append(block)
 
@@ -57,7 +25,7 @@ class FiltersHolder(tk.Frame):
     def click_and(self):
         self.count += 1
 
-        block = FilterBlock(self, self.cursor)
+        block = FilterBlock(self, self.columns)
         block.grid(row=0, column=self.count, rowspan=4)
         self.blocks.append(block)
 
@@ -84,13 +52,15 @@ class FiltersHolder(tk.Frame):
 
 
 class Filter(tk.Frame):
-    def __init__(self, root, cursor):
+    def __init__(self, root, columns):
         super().__init__(root)
+        self.columns = columns
         self.count = 1
         self.block_holders = []
-        self.cursor = cursor
+        self.button_or = None
 
-        holder = FiltersHolder(self, self.cursor)
+    def init_ui(self):
+        holder = FiltersHolder(self, self.columns)
         holder.grid(row=self.count, column=0)
         self.block_holders.append(holder)
 
@@ -100,7 +70,7 @@ class Filter(tk.Frame):
     def or_operator(self):
         self.count += 1
 
-        holder = FiltersHolder(self, self.cursor)
+        holder = FiltersHolder(self, self.columns)
         holder.grid(row=self.count, column=0)
         self.block_holders.append(holder)
 
@@ -123,3 +93,9 @@ class Filter(tk.Frame):
                 filter_line += el.get_str()
 
         return filter_line
+
+    def refresh(self, columns):
+        self.columns = columns
+
+        self.block_holders.clear()
+        self.init_ui()

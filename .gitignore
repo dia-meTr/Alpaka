@@ -3,3 +3,5 @@ constants.py
 .idea
 __pycashe__/
 test.py
+simples.py
+select_components/__pycache__/

@@ -16,17 +16,19 @@ class Sorter(tk.Frame):
     def init_ui(self):
         lb_order_by = tk.Label(self, text='Order by:')
         lb_order_by.grid(row=1, column=0)
+        columns = get_columns(self.table, self.cursor)
 
-        self.cb_order_by = ttk.Combobox(self, values=get_columns(self.table, self.cursor),
+        self.cb_order_by = ttk.Combobox(self, values=columns,
                                         textvariable=self.column)
         self.cb_order_by.grid(row=1, column=1)
 
         ch_reverse = tk.Checkbutton(self, text="Reverse order", variable=self.reverse)
         ch_reverse.grid(row=1, column=2)
 
-    def refresh(self):
+    def refresh(self, table, columns):
 
-        self.cb_order_by['values'] = get_columns(self.table, self.cursor)
+        self.table = table
+        self.cb_order_by['values'] = columns
 
     def get_query_piece(self):
         result = ""

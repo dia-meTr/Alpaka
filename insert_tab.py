@@ -26,7 +26,7 @@ class InsertTab(ttk.Frame):
 
         self.side_bar = SidebarSelect(self, relief=tk.RIDGE, borderwidth=5)
         self.side_bar.grid(row=0, column=0, sticky="nsew")
-        self.side_bar.init_ui(get_columns(self.table, my_cursor))
+        self.side_bar.init_ui(get_columns(self.table.get(), my_cursor))
 
         self.table_view = Table(self, relief=tk.RIDGE, borderwidth=5)
         self.table_view.grid(row=1, column=0, columnspan=2, sticky="nsew")

@@ -41,9 +41,9 @@ def get_columns(table, cursor):
     columns = []
 
     # If table variable is not empty:
-    if table.get() != '':
+    if table != '':
         # Executing SHOW columns... request
-        cursor.execute(f"SHOW columns FROM `{table.get()}`")
+        cursor.execute(f"SHOW columns FROM `{table}`")
         res = cursor.fetchall()
         # print(res)
 
