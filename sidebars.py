@@ -45,6 +45,8 @@ class SidebarSelect(tk.Frame):
         for key, value in self.ch_buttons.items():
             if value[1].get():
                 res.append(key)
+        if not res:
+            raise Exception(f"You have to choose at least one field")
         return res
 
     def clear(self):

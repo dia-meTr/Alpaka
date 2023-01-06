@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 from tkinter import ttk
 from tkinter import Frame
 from table import Table, get_tables, get_columns
@@ -11,9 +12,11 @@ class SelectTab(Frame):
     """
     class for creating sql query
     """
+
     def __init__(self, root, my_cursor):
         super().__init__(root)
         self.cursor = my_cursor
+        self.tables = get_tables(self.cursor)
 
         self.table = tk.StringVar()
         self.table.trace('w', lambda *args: self.refresh_columns())
@@ -45,11 +48,9 @@ class SelectTab(Frame):
         Initialising UI for select tab
         :return:
         """
-        # Get tables list
-        tables = get_tables(self.cursor)
 
         # Combobox for choosing table
-        cb_chose_table = ttk.Combobox(self.m_space, values=tables, textvariable=self.table)
+        cb_chose_table = ttk.Combobox(self.m_space, values=self.tables, textvariable=self.table)
         cb_chose_table.grid(row=0)
 
         # Order by
@@ -62,7 +63,6 @@ class SelectTab(Frame):
         lb_where.grid(row=2, column=0)
 
         self.filter_chooser = Filter(self.m_space, [])
-        # self.filter_chooser.grid(row=3, column=0)
         self.filter_chooser.init_ui()
         self.filter_chooser.grid(row=3, column=0)
 
@@ -74,19 +74,20 @@ class SelectTab(Frame):
         """
         Executing and formation of query
         """
-        # Getting all posible columns
-        columns = self.side_bar.get_fields()
-
         # Creating SQL request
-        sql_request = ""
-        if self.table.get() != '':
-            sql_request += f"SELECT {', '.join(self.side_bar.get_fields())} from `{self.table.get()}`"
-        else:
+        try:
+            table = self.get_table()
+            columns = self.side_bar.get_fields()
+            sql_request = f"SELECT {', '.join(columns)} " \
+                          f"from `{table}`"
+
+            sql_request += self.filter_chooser.get_str()
+
+            sql_request += self.sort_block.get_query_piece()
+        except Exception as e:
+            print(e.args)
+            messagebox.showerror("Error", e.args[0])
             return
-
-        sql_request += self.filter_chooser.get_str()
-
-        sql_request += self.sort_block.get_query_piece()
 
         # Execute SQL request
         print(sql_request)
@@ -95,6 +96,12 @@ class SelectTab(Frame):
 
         # Build a table
         self.table_view.make_view(columns, result)
+
+    def get_table(self):
+        if self.table.get() not in self.tables:
+            raise Exception('There is no such table')
+        else:
+            return self.table.get()
 
     def refresh_columns(self):
         """
