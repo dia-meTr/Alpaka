@@ -36,4 +36,15 @@ class FilterBlock(tk.Frame):
         return self.column1.get() != '' and self.operator_str.get() != '' and self.value.get() != ''
 
     def get_statement(self):
-        return f'{self.column1.get()} {self.operators[self.operator_str.get()]} {self.value.get()}'
+        statement = ""
+        statement += f"`{self.column1.get()}`"
+        statement += f" {self.operators[self.operator_str.get()]} "
+        value = self.value.get()
+        if value.lstrip("-").replace('.', '', 1).isnumeric():
+            statement += value
+        elif value in self.columns:
+            statement += f"`{value}`"
+        else:
+            statement += f"'{value}'"
+
+        return statement
