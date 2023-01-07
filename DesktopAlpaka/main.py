@@ -1,8 +1,6 @@
-import mysql.connector
-from constants import *
 import tkinter as tk
 from working_area import Main
-from connector import my_cursor
+from DesktopAlpaka.connector import my_cursor
 
 
 if __name__ == '__main__':

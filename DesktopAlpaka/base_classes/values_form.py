@@ -1,7 +1,7 @@
 from tkinter import ttk
 from tkinter import messagebox
-from base_classes.field import Field
-from connector import get_table_info
+from DesktopAlpaka.base_classes.field import Field
+from DesktopAlpaka.connector import get_table_info
 
 
 class ValuesForm(ttk.Frame):

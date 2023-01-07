@@ -1,9 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
 
-from select_components.filter_data import Filter
-from sidebar.sidebar import Sidebar
-from base_classes.table import get_tables, Table, get_columns
+from DesktopAlpaka.select_components.filter_data import Filter
+from DesktopAlpaka.sidebar.sidebar import Sidebar
+from DesktopAlpaka.base_classes.table import get_tables, Table, get_columns
 
 
 class DeleteTab(tk.Frame):

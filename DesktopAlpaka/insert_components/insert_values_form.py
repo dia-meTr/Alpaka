@@ -1,5 +1,5 @@
-from insert_components.insert_field import InsertField
-from base_classes.values_form import ValuesForm
+from DesktopAlpaka.insert_components.insert_field import InsertField
+from DesktopAlpaka.base_classes.values_form import ValuesForm
 
 
 class InsertValuesForm(ValuesForm):

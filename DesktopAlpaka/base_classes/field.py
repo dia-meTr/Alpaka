@@ -1,8 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 from constants import type_groups
-from base_classes.DateTimePicker import DateTimePicker
-from connector import get_relation
+from DesktopAlpaka.base_classes.DateTimePicker import DateTimePicker
+from DesktopAlpaka.connector import get_relation
 
 
 class Field(tk.Frame):

@@ -1,5 +1,5 @@
 import tkinter as tk
-from select_components.filter_block import FilterBlock
+from DesktopAlpaka.select_components.filter_block import FilterBlock
 
 
 class FiltersHolder(tk.Frame):

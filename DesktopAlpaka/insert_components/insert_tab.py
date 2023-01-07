@@ -1,8 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
-from base_classes.table import Table, get_columns, get_tables
-from sidebar.sidebar import Sidebar
-from insert_components.insert_values_form import InsertValuesForm
+from DesktopAlpaka.base_classes.table import Table, get_columns, get_tables
+from DesktopAlpaka.sidebar.sidebar import Sidebar
+from DesktopAlpaka.insert_components.insert_values_form import InsertValuesForm
 
 
 class InsertTab(ttk.Frame):

@@ -1,8 +1,8 @@
 from tkinter import ttk
-from insert_components.insert_tab import InsertTab
-from select_components.select_tab import SelectTab
-from update_components.update_tab import UpdateTab
-from delete_components.delete_tab import DeleteTab
+from DesktopAlpaka.insert_components.insert_tab import InsertTab
+from DesktopAlpaka.select_components.select_tab import SelectTab
+from DesktopAlpaka.update_components.update_tab import UpdateTab
+from DesktopAlpaka.delete_components.delete_tab import DeleteTab
 
 
 class Main(ttk.Frame):

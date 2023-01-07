@@ -1,9 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
-from update_components.update_values_form import UpdateValuesForm
-from select_components.filter_data import Filter
-from sidebar.sidebar import Sidebar
-from base_classes.table import Table, get_tables, get_columns
+from DesktopAlpaka.update_components.update_values_form import UpdateValuesForm
+from DesktopAlpaka.select_components.filter_data import Filter
+from DesktopAlpaka.sidebar.sidebar import Sidebar
+from DesktopAlpaka.base_classes.table import Table, get_tables, get_columns
 
 
 class UpdateTab(tk.Frame):

@@ -2,10 +2,10 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
 from tkinter import Frame
-from base_classes.table import Table, get_tables, get_columns
-from sidebar.sidebar import Sidebar
-from select_components.filter_data import Filter
-from select_components.sort_data import Sorter
+from DesktopAlpaka.base_classes.table import Table, get_tables, get_columns
+from DesktopAlpaka.sidebar.sidebar import Sidebar
+from DesktopAlpaka.select_components.filter_data import Filter
+from DesktopAlpaka.select_components.sort_data import Sorter
 
 
 class SelectTab(Frame):
