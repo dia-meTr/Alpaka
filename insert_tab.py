@@ -3,7 +3,7 @@ from tkinter import ttk
 from tkinter import messagebox
 from table import Table, get_columns, get_tables
 from sidebars import SidebarSelect
-from Insertion_panel import Field
+from insert_components.insert_values_form import InsertValuesForm
 from connector import get_table_info
 
 
@@ -11,12 +11,13 @@ class InsertTab(ttk.Frame):
     def __init__(self, root, my_cursor):
         super().__init__(root)
 
+        self.values_form = None
         self.table = tk.StringVar()
         self.table.trace('w', lambda *args: self.refresh_panel())
         self.cursor = my_cursor
         self.fields = []
 
-        tables = get_tables(self.cursor)
+        self.tables = get_tables(self.cursor)
 
         # Rows&Columns configuration
         self.columnconfigure(0, weight=3, uniform='column')
@@ -33,52 +34,33 @@ class InsertTab(ttk.Frame):
 
         self.m_space = tk.Frame(self, my_cursor, relief=tk.RIDGE, borderwidth=5)
         self.m_space.grid(row=0, column=1, sticky="nsew")
+        self.init_ui()
 
-        table_chooser = ttk.Combobox(self.m_space, values=tables, textvariable=self.table)
+    def init_ui(self):
+        table_chooser = ttk.Combobox(self.m_space, values=self.tables, textvariable=self.table)
         table_chooser.grid(row=0, column=0)
-        self.table.set(tables[0])
 
         button = tk.Button(self.m_space, text='INSERT', command=self.get_query)
         button.grid(row=0, column=1)
+        
+        self.values_form = InsertValuesForm(self.m_space, self.cursor, self.table.get())
+        self.values_form.grid(row=1)
 
     def refresh_panel(self):
         """
         refresh information panel after changing table
         :return:
         """
-        # If table variable is not empty:
-        if self.table.get() != '':
-            # Executing SHOW columns... request
-            res = get_table_info(self.table.get())
-            # print(res)
+        self.values_form.table = self.table.get()
+        self.values_form.refresh_panel()
 
-            for el in self.fields:
-                el.grid_forget()
-
-            self.fields = []
-
-            for i, el in enumerate(res):
-                self.fields.append(Field(self.m_space, self.cursor, self.table.get(), *el))
-                self.fields[i].grid(row=i+1, column=0)
-
-            self.side_bar.init_ui([el.field_name for el in self.fields])
+        self.side_bar.init_ui([el.field_name for el in self.values_form.fields])
 
     def get_query(self):
-        args = []
+        form_data = self.values_form.get_values()
 
-        for el in self.fields:
-            try:
-
-                arg = el.get_value()
-                if arg is not None:
-                    args.append(arg)
-            except Exception as e:
-                print(e.args)
-                messagebox.showerror("Error", e.args[0])
-                return
-
-        columns = [row[0] for row in args]
-        values = [row[1] for row in args]
+        columns = [row[0] for row in form_data]
+        values = [row[1] for row in form_data]
         n = len(columns)
 
         query = "INSERT INTO `" + self.table.get() + "` (`" + \
