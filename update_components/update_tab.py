@@ -2,8 +2,8 @@ import tkinter as tk
 from tkinter import ttk
 from update_components.update_values_form import UpdateValuesForm
 from select_components.filter_data import Filter
-from sidebars import SidebarSelect
-from table import Table, get_tables, get_columns
+from sidebar.sidebar import Sidebar
+from base_classes.table import Table, get_tables, get_columns
 
 
 class UpdateTab(tk.Frame):
@@ -22,7 +22,7 @@ class UpdateTab(tk.Frame):
         self.columnconfigure(1, weight=8, uniform='column')
         self.rowconfigure(1, weight=1, uniform='row')
 
-        self.side_bar = SidebarSelect(self, relief=tk.RIDGE, borderwidth=4)
+        self.side_bar = Sidebar(self, relief=tk.RIDGE, borderwidth=4)
         self.m_space = tk.Frame(self, relief=tk.RIDGE, borderwidth=4)
         self.table_view = Table(self, relief=tk.RIDGE, borderwidth=4)
         self.side_bar.grid(row=0, column=0, sticky="nsew")
@@ -33,8 +33,8 @@ class UpdateTab(tk.Frame):
         self.init_ui()
 
     def init_ui(self):
-        cb_chose_table = ttk.Combobox(self.m_space, values=self.tables, textvariable=self.table)
-        cb_chose_table.grid(row=0, column=0)
+        table_chooser = ttk.Combobox(self.m_space, values=self.tables, textvariable=self.table)
+        table_chooser.grid(row=0, column=0)
 
         update_button = tk.Button(self.m_space, text='UPDATE', command=self.get_query)
         update_button.grid(row=0, column=1)
@@ -66,9 +66,9 @@ class UpdateTab(tk.Frame):
 
     def get_query(self):
 
-        new_values = self.new_values_form.get_values()
-        columns = [row[0] for row in new_values]
-        values = [row[1] for row in new_values]
+        form_data = self.new_values_form.get_values()
+        columns = [row[0] for row in form_data]
+        values = [row[1] for row in form_data]
 
         chooser = self.chooser.get_str()
 

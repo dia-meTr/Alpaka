@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from table import get_columns
+from base_classes.table import get_columns
 
 
 class Sorter(tk.Frame):

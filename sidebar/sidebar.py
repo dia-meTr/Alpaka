@@ -1,8 +1,7 @@
 import tkinter as tk
-from table import get_tables, get_columns
 
 
-class SidebarSelect(tk.Frame):
+class Sidebar(tk.Frame):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.ch_all = None

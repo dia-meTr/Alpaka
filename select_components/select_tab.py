@@ -2,8 +2,8 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
 from tkinter import Frame
-from table import Table, get_tables, get_columns
-from sidebars import SidebarSelect
+from base_classes.table import Table, get_tables, get_columns
+from sidebar.sidebar import Sidebar
 from select_components.filter_data import Filter
 from select_components.sort_data import Sorter
 
@@ -20,7 +20,6 @@ class SelectTab(Frame):
 
         self.table = tk.StringVar()
         self.table.trace('w', lambda *args: self.refresh_columns())
-        columns = ('Drink_Name', 'Price', 'Size', 'Type')
 
         # Rows&Columns configuration
         self.columnconfigure(0, weight=3, uniform='column')
@@ -29,7 +28,7 @@ class SelectTab(Frame):
         self.rowconfigure(1, weight=1, uniform='row')
 
         # Creating window parts
-        self.side_bar = SidebarSelect(self, relief=tk.RIDGE, borderwidth=5)
+        self.side_bar = Sidebar(self, relief=tk.RIDGE, borderwidth=5)
         self.m_space = tk.Frame(self, relief=tk.RIDGE, borderwidth=5)
         self.table_view = Table(self, relief=tk.RIDGE, borderwidth=5)
         self.side_bar.grid(row=0, column=0, sticky="nsew")
@@ -40,7 +39,7 @@ class SelectTab(Frame):
         self.sort_block = Sorter(self.m_space, self.cursor, self.table.get())
         self.filter_chooser = None
 
-        self.side_bar.init_ui(columns)
+        self.side_bar.init_ui([])
         self.init_ui()
 
     def init_ui(self):

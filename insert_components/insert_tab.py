@@ -1,10 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
-from tkinter import messagebox
-from table import Table, get_columns, get_tables
-from sidebars import SidebarSelect
+from base_classes.table import Table, get_columns, get_tables
+from sidebar.sidebar import Sidebar
 from insert_components.insert_values_form import InsertValuesForm
-from connector import get_table_info
 
 
 class InsertTab(ttk.Frame):
@@ -25,7 +23,7 @@ class InsertTab(ttk.Frame):
         self.columnconfigure(1, weight=8, uniform='column')
         self.rowconfigure(1, weight=1, uniform='row')
 
-        self.side_bar = SidebarSelect(self, relief=tk.RIDGE, borderwidth=5)
+        self.side_bar = Sidebar(self, relief=tk.RIDGE, borderwidth=5)
         self.side_bar.grid(row=0, column=0, sticky="nsew")
         self.side_bar.init_ui(get_columns(self.table.get(), my_cursor))
 

@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from constants import type_groups
-from DateTimePicker import DateTimePicker
+from base_classes.DateTimePicker import DateTimePicker
 from connector import get_relation
 
 
@@ -54,16 +54,6 @@ class Field(tk.Frame):
 
     def get_value(self):
         value = self.value.get()
-        if self.extra == 'auto_increment':
-            return None
-        elif value == '' and self.default is not None:
-            value = self.default
-        elif value == '' and self.null == 0:
-            raise Exception(f"Sorry, column '{self.field_name}' can't be NULL")
-        elif value == '' and self.null != 0:
-            value = None
-
-        value = self.check_type(value)
 
         return self.field_name, value
 

@@ -1,6 +1,4 @@
 import tkinter as tk
-from tkinter import ttk
-from table import get_columns
 from select_components.filter_block import FilterBlock
 
 
