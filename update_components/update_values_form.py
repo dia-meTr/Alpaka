@@ -1,8 +1,5 @@
-import tkinter as tk
 from update_components.update_field import UpdateField
-from tkinter import messagebox
-from connector import get_table_info
-from values_form import ValuesForm
+from base_classes.values_form import ValuesForm
 
 
 class UpdateValuesForm(ValuesForm):

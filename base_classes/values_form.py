@@ -1,6 +1,6 @@
 from tkinter import ttk
 from tkinter import messagebox
-from insert_components.insert_values_panel import Field
+from base_classes.field import Field
 from connector import get_table_info
 
 
