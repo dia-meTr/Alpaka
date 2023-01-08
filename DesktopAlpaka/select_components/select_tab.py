@@ -4,7 +4,7 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
 from DesktopAlpaka.my_sql import get_columns
-from DesktopAlpaka.select_components.filter_data import Filter
+from DesktopAlpaka.base_classes.filter.filter_data import Filter
 from DesktopAlpaka.select_components.sort_data import Sorter
 from DesktopAlpaka.base_classes.tab import Tab
 
@@ -42,7 +42,7 @@ class SelectTab(Tab):  # pylint: disable=too-many-ancestors
         lb_where = tk.Label(self.m_space, text='Config filters')
         lb_where.grid(row=2, column=0)
 
-        self.filter_chooser = Filter(self.m_space, [])
+        self.filter_chooser = Filter(self.m_space, [], self.update_scroll_region)
         self.filter_chooser.init_ui()
         self.filter_chooser.grid(row=3, column=0, columnspan=50)
 

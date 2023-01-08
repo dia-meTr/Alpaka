@@ -3,6 +3,7 @@ This module describes working area of an app
 Area, where five tabs are created and theirs classes are caled
 """
 from tkinter import ttk
+import tkinter as tk
 from DesktopAlpaka.insert_components.insert_tab import InsertTab
 from DesktopAlpaka.select_components.select_tab import SelectTab
 from DesktopAlpaka.update_components.update_tab import UpdateTab
@@ -10,7 +11,7 @@ from DesktopAlpaka.delete_components.delete_tab import DeleteTab
 from DesktopAlpaka.actions_tab import ActionsTab
 
 
-class WorkingArea(ttk.Frame):  # pylint: disable=too-many-ancestors
+class WorkingArea(tk.Frame):
     """
     This class for working area
     """

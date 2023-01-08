@@ -3,7 +3,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from DesktopAlpaka.update_components.update_values_form import UpdateValuesForm
-from DesktopAlpaka.select_components.filter_data import Filter
+from DesktopAlpaka.base_classes.filter.filter_data import Filter
 from DesktopAlpaka.my_sql import get_columns
 from DesktopAlpaka.base_classes.tab import Tab
 
@@ -40,7 +40,7 @@ class UpdateTab(Tab):  # pylint: disable=too-many-ancestors
         self.m_space.columnconfigure(1, weight=1, uniform='column')
         self.m_space.rowconfigure(1, weight=5, uniform='row')
 
-        self.chooser = Filter(where_panel, get_columns(self.table.get(), self.cursor))
+        self.chooser = Filter(where_panel, get_columns(self.table.get(), self.cursor), self.update_scroll_region)
         self.chooser.init_ui()
         self.chooser.grid(pady=5, padx=5)
 
@@ -77,7 +77,7 @@ class UpdateTab(Tab):  # pylint: disable=too-many-ancestors
             self.cursor.execute(query, (*values,))
 
             messagebox.showinfo("Done", "Information updated")
-        except Exception as e:
-            print(e.args)
-            messagebox.showerror("Error", e.args[0])
+        except Exception as ex:
+            print(ex.args)
+            messagebox.showerror("Error", ex.args[0])
             return

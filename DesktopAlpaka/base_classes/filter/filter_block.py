@@ -24,13 +24,13 @@ class FilterBlock(tk.Frame):
 
     def init_ui(self):
         filter_by = ttk.Combobox(self, values=self.columns, textvariable=self.column1)
-        filter_by.grid(row=3, column=1)
+        filter_by.grid(row=3, column=1, pady=5, padx=5)
 
         operator = ttk.Combobox(self, values=list(self.operators.keys()), textvariable=self.operator_str)
-        operator.grid(row=4, column=1)
+        operator.grid(row=4, column=1, pady=5, padx=5)
 
         compare_with = ttk.Combobox(self, values=self.columns, textvariable=self.value)
-        compare_with.grid(row=5, column=1)
+        compare_with.grid(row=5, column=1, pady=5, padx=5)
 
     def is_full(self):
         return self.column1.get() != '' and self.operator_str.get() != '' and self.value.get() != ''

@@ -1,8 +1,7 @@
 """This module describes update tab class"""
 
 import tkinter as tk
-from tkinter import ttk
-from tkinter import messagebox
+from tkinter import ttk, Scrollbar, messagebox
 from DesktopAlpaka.sidebar.sidebar import Sidebar
 from DesktopAlpaka.base_classes.table import Table
 from DesktopAlpaka.my_sql import get_tables
@@ -12,6 +11,7 @@ class Tab(tk.Frame):
     """
     This is class for update tab
     """
+
     # pylint: disable=too-many-instance-attributes
     # Eight is reasonable in this case.
 
@@ -36,11 +36,30 @@ class Tab(tk.Frame):
         self.side_bar = Sidebar(self, relief=tk.RIDGE, borderwidth=3)
         self.side_bar.grid(row=0, column=0, sticky="nsew")
 
-        self.m_space = tk.Frame(self, relief=tk.RIDGE, borderwidth=3)
-        self.m_space.grid(row=0, column=1, sticky="nsew")
-
         self.table_view = Table(self, relief=tk.RIDGE, borderwidth=3)
         self.table_view.grid(row=1, column=0, columnspan=2, sticky="nsew")
+
+        space = tk.Frame(self, relief=tk.RIDGE, borderwidth=3)
+        space.grid(row=0, column=1, sticky="nsew")
+
+        self.canvas = tk.Canvas(space)
+        self.m_space = tk.Frame(self.canvas)
+        scrollbar_h = tk.Scrollbar(space)
+        scrollbar_v = tk.Scrollbar(space)
+
+        self.canvas.config(xscrollcommand=scrollbar_h.set, yscrollcommand=scrollbar_v.set,
+                           highlightthickness=0)
+        scrollbar_h.config(orient=tk.HORIZONTAL, command=self.canvas.xview)
+        scrollbar_v.config(orient=tk.VERTICAL, command=self.canvas.yview)
+
+        scrollbar_h.pack(fill=tk.X, side=tk.BOTTOM, expand=tk.FALSE)
+        scrollbar_v.pack(fill=tk.Y, side=tk.RIGHT, expand=tk.FALSE)
+        self.canvas.pack(fill=tk.BOTH, side=tk.LEFT, expand=tk.TRUE)
+        self.canvas.create_window(0, 0, window=self.m_space, anchor=tk.NW)
+
+    def update_scroll_region(self):
+        self.canvas.update_idletasks()
+        self.canvas.config(scrollregion=self.m_space.bbox())
 
     def init_head(self):
         """
@@ -60,7 +79,9 @@ class Tab(tk.Frame):
         """
         This is method for getting table and handling "No such table" error
         """
-        if self.table.get() not in self.tables:
+        if self.table.get() == "":
+            raise Exception("You haven't chose a table")
+        elif self.table.get() not in self.tables:
             raise Exception('There is no such table')
         else:
             return self.table.get()

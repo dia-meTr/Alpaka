@@ -3,7 +3,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from DesktopAlpaka.my_sql import get_columns
-from DesktopAlpaka.select_components.filter_data import Filter
+from DesktopAlpaka.base_classes.filter.filter_data import Filter
 from DesktopAlpaka.base_classes.tab import Tab
 
 
@@ -27,7 +27,7 @@ class DeleteTab(Tab):  # pylint: disable=too-many-ancestors
         delete_button = tk.Button(self.head, text='DELETE', command=self.get_query)
         delete_button.grid(row=0, column=1)
 
-        self.chooser = Filter(self.m_space, get_columns(self.table.get(), self.cursor))
+        self.chooser = Filter(self.m_space, get_columns(self.table.get(), self.cursor), self.update_scroll_region)
         self.chooser.init_ui()
         self.chooser.grid(columnspan=50)
 

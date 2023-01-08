@@ -44,6 +44,8 @@ class InsertTab(Tab):  # pylint: disable=too-many-ancestors
 
         self.side_bar.init_ui([el.field_name for el in self.values_form.fields])
 
+        self.update_scroll_region()
+
     def get_query(self):
         """
         This is methode for getting and executing Insert query
