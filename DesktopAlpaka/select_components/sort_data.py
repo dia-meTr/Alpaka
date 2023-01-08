@@ -1,3 +1,4 @@
+"""This is module for describing sort pannel"""
 import tkinter as tk
 from tkinter import ttk
 from DesktopAlpaka.my_sql import get_columns
@@ -7,9 +8,11 @@ class Sorter(tk.Frame):
     """
     This is class for sorting panel
     """
+
     def __init__(self, root, my_cursor, table):
         super().__init__(root)
 
+        self.columns = []
         self.column = tk.StringVar()
         self.reverse = tk.BooleanVar()
         self.cursor = my_cursor
@@ -22,9 +25,9 @@ class Sorter(tk.Frame):
         """
         lb_order_by = tk.Label(self, text='Order by:')
         lb_order_by.grid(row=1, column=0)
-        columns = get_columns(self.table, self.cursor)
+        self.columns = get_columns(self.table, self.cursor)
 
-        self.cb_order_by = ttk.Combobox(self, values=columns,
+        self.cb_order_by = ttk.Combobox(self, values=self.columns,
                                         textvariable=self.column)
         self.cb_order_by.grid(row=1, column=1)
 
@@ -36,6 +39,8 @@ class Sorter(tk.Frame):
         This method for refreshing form after table was changed
         """
         self.table = table
+        self.columns = columns
+        self.column.set('')
         self.cb_order_by['values'] = columns
 
     def get_query_piece(self):
@@ -43,16 +48,14 @@ class Sorter(tk.Frame):
         This is method for getting piece of query responsible for sorting
         """
         result = ""
+        column = self.column.get()
 
-        if self.column.get() != '':
+        if column != '' and column in self.columns:
             result += f" ORDER BY `{self.column.get()}`"
 
             if self.reverse.get():
                 result += " DESC"
+        elif column != '':
+            raise Exception(f'There is no such column: {column}')
 
         return result
-
-
-
-
-
