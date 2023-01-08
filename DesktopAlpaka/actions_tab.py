@@ -1,10 +1,35 @@
 """This module describes how the Action tab is going to work"""
+import json
 import tkinter as tk
 from tkinter import messagebox
+import os
+
+
+def clear_connect_info():
+    params = {
+        "host": "",
+        "user": "",
+        "password": "",
+        "database": ""
+    }
+    json_params = json.dumps(params, indent=4)
+
+    print(os.getcwd() + "/DesktopAlpaka/info.json")
+
+    # Writing to sample.json
+    with open(os.getcwd() + "/DesktopAlpaka/info.json", "w") as outfile:
+        outfile.write(json_params)
+
+
+def graph():
+    """This is method for creating graph"""
+    print("New Graphic")
+    messagebox.showinfo("Done", "Graphic Created")
 
 
 class ActionsTab(tk.Frame):
     """This is class for Action tab"""
+
     def __init__(self, root, cursor, conn):
         super().__init__(root)
         self.cursor = cursor
@@ -35,8 +60,11 @@ class ActionsTab(tk.Frame):
         button_revert = tk.Button(buttons, text="Revert changes", command=self.revert)
         button_revert.grid(row=1, pady=5)
 
-        button_graph = tk.Button(buttons, text="Create graphic", command=self.graph)
+        button_graph = tk.Button(buttons, text="Create graphic", command=graph)
         button_graph.grid(row=2, pady=5)
+
+        button_clear_info = tk.Button(buttons, text="Clear connection info", command=clear_connect_info)
+        button_clear_info.grid(row=3, pady=5)
 
     def save(self):
         """This is method for saving changes"""
@@ -47,9 +75,3 @@ class ActionsTab(tk.Frame):
         """This is method for reverting changes"""
         self.conn.rollback()
         messagebox.showinfo("Done", "Changes Revert")
-
-    def graph(self):
-        """This is method for creating graph"""
-        print("New Graphic")
-        messagebox.showinfo("Done", "Graphic Created")
-

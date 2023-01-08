@@ -1,4 +1,5 @@
 import json
+import os
 import tkinter as tk
 from tkinter import messagebox
 from DesktopAlpaka.my_sql import connect_to_bd, get_privileges
@@ -68,7 +69,7 @@ class ConnectionTab(tk.Frame):
         button.grid(row=5, column=1, columnspan=2, padx=20, pady=20)
 
     def get_params(self):
-        with open("settings.json", 'r') as data:
+        with open(os.getcwd() + "/DesktopAlpaka/info.json", 'r') as data:
             self.params = json.load(data)
 
         are_params_empty = self.params['user'] == ''
@@ -83,7 +84,7 @@ class ConnectionTab(tk.Frame):
         json_params = json.dumps(self.new_params, indent=4)
 
         # Writing to sample.json
-        with open("settings.json", "w") as outfile:
+        with open(os.getcwd() + "/DesktopAlpaka/info.json", "w") as outfile:
             outfile.write(json_params)
 
     def ask_to_save(self):
