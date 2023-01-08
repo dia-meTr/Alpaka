@@ -1,6 +1,9 @@
+"""This module describes delete tab class"""
+
 import tkinter as tk
 from tkinter import ttk
-from DesktopAlpaka.my_sql import get_tables, get_columns, connect_to_bd
+from tkinter import messagebox
+from DesktopAlpaka.my_sql import get_tables, get_columns
 from DesktopAlpaka.select_components.filter_data import Filter
 from DesktopAlpaka.sidebar.sidebar import Sidebar
 from DesktopAlpaka.base_classes.table import Table
@@ -44,9 +47,44 @@ class DeleteTab(tk.Frame):
         delete_button = tk.Button(self.m_space, text='DELETE', command=self.get_query)
         delete_button.grid(row=0, column=1)
 
+        button_check = tk.Button(self.m_space, text='CHECK', command=self.check)
+        button_check.grid(row=0, column=2)
+
         self.chooser = Filter(self.m_space, get_columns(self.table.get(), self.cursor))
         self.chooser.init_ui()
         self.chooser.grid()
+
+    def get_table(self):
+        """
+        This is method for getting table and handling "No such table" error
+        """
+        if self.table.get() not in self.tables:
+            raise Exception('There is no such table')
+        else:
+            return self.table.get()
+
+    def check(self):
+        """
+        This methode execute Select query for chosen table
+        """
+        # Creating SQL request
+        try:
+            table = self.get_table()
+            columns = self.side_bar.get_fields()
+            sql_request = f"SELECT {', '.join(columns)} " \
+                          f"from `{table}`;"
+        except Exception as e:
+            print(e.args)
+            messagebox.showerror("Error", e.args[0])
+            return
+
+        # Execute SQL request
+        print(sql_request)
+        self.cursor.execute(sql_request)
+        result = self.cursor.fetchall()
+
+        # Build a table
+        self.table_view.make_view(columns, result)
 
     def refresh_columns(self):
         """
@@ -55,6 +93,7 @@ class DeleteTab(tk.Frame):
         columns = get_columns(self.table.get(), self.cursor)
 
         self.chooser.refresh(columns)
+        self.side_bar.init_ui(columns)
 
     def get_query(self):
         """

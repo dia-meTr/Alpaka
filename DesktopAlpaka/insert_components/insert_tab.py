@@ -1,4 +1,7 @@
+"""This module describes insert tab class"""
+
 import tkinter as tk
+from tkinter import messagebox
 from tkinter import ttk
 from DesktopAlpaka.base_classes.table import Table
 from DesktopAlpaka.sidebar.sidebar import Sidebar
@@ -45,8 +48,11 @@ class InsertTab(ttk.Frame):
         table_chooser = ttk.Combobox(self.m_space, values=self.tables, textvariable=self.table)
         table_chooser.grid(row=0, column=0)
 
-        button = tk.Button(self.m_space, text='INSERT', command=self.get_query)
-        button.grid(row=0, column=1)
+        button_insert = tk.Button(self.m_space, text='INSERT', command=self.get_query)
+        button_insert.grid(row=0, column=1)
+
+        button_check = tk.Button(self.m_space, text='CHECK', command=self.check)
+        button_check.grid(row=0, column=2)
         
         self.values_form = InsertValuesForm(self.m_space, self.cursor, self.table.get())
         self.values_form.grid(row=1)
@@ -60,6 +66,38 @@ class InsertTab(ttk.Frame):
 
         self.side_bar.init_ui([el.field_name for el in self.values_form.fields])
 
+    def get_table(self):
+        """
+        This is method for getting table and handling "No such table" error
+        """
+        if self.table.get() not in self.tables:
+            raise Exception('There is no such table')
+        else:
+            return self.table.get()
+
+    def check(self):
+        """
+        This methode execute Select query for chosen table
+        """
+        # Creating SQL request
+        try:
+            table = self.get_table()
+            columns = self.side_bar.get_fields()
+            sql_request = f"SELECT {', '.join(columns)} " \
+                          f"from `{table}`;"
+        except Exception as e:
+            print(e.args)
+            messagebox.showerror("Error", e.args[0])
+            return
+
+        # Execute SQL request
+        print(sql_request)
+        self.cursor.execute(sql_request)
+        result = self.cursor.fetchall()
+
+        # Build a table
+        self.table_view.make_view(columns, result)
+
     def get_query(self):
         """
         This is methode for getting and executing Insert query
@@ -68,12 +106,12 @@ class InsertTab(ttk.Frame):
 
         columns = [row[0] for row in form_data]
         values = [row[1] for row in form_data]
-        n = len(columns)
+        n_columns = len(columns)
 
         query = "INSERT INTO `" + self.table.get() + "` (`" + \
                 '`, `'.join(columns) + "`) " \
                 "VALUES (" + \
-                ', '.join(["%s"] * n) + ");"
+                ', '.join(["%s"] * n_columns) + ");"
 
         print(query, (columns, values))
 
