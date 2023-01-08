@@ -14,6 +14,18 @@ def connect_to_bd(params):
     return my_cursor, mydb
 
 
+def get_privileges(user, cursor):
+    try:
+        cursor.execute(f"SELECT `Select_priv`, Insert_priv, Update_priv, Delete_priv "
+                       f"FROM mysql.user WHERE `User`='{user}';")
+        result = cursor.fetchall()
+        print(result[0])
+    except mysql.connector.errors.ProgrammingError:
+        raise Exception("It seems like you don't have enough rights to use this app")
+
+    return result[0]
+
+
 def get_table_info(table, cursor):
     cursor.execute(f"SHOW columns FROM `{table}`")
     res = cursor.fetchall()
@@ -54,7 +66,6 @@ def get_tables(cursor):
 
 
 def get_columns(table, cursor):
-
     columns = []
 
     # If table variable is not empty:
