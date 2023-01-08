@@ -44,7 +44,7 @@ class DeleteTab(tk.Frame):
         table_chooser = ttk.Combobox(self.m_space, values=self.tables, textvariable=self.table)
         table_chooser.grid(row=0, column=0)
 
-        delete_button = tk.Button(self.m_space, text='DELETE', command=self.get_query)
+        delete_button = tk.Button(self.m_space, text='DELETE', command=self.delete)
         delete_button.grid(row=0, column=1)
 
         button_check = tk.Button(self.m_space, text='CHECK', command=self.check)
@@ -60,8 +60,8 @@ class DeleteTab(tk.Frame):
         """
         if self.table.get() not in self.tables:
             raise Exception('There is no such table')
-        else:
-            return self.table.get()
+
+        return self.table.get()
 
     def check(self):
         """
@@ -73,9 +73,9 @@ class DeleteTab(tk.Frame):
             columns = self.side_bar.get_fields()
             sql_request = f"SELECT {', '.join(columns)} " \
                           f"from `{table}`;"
-        except Exception as e:
-            print(e.args)
-            messagebox.showerror("Error", e.args[0])
+        except Exception as ex:
+            print(ex.args)
+            messagebox.showerror("Error", ex.args[0])
             return
 
         # Execute SQL request
@@ -95,13 +95,21 @@ class DeleteTab(tk.Frame):
         self.chooser.refresh(columns)
         self.side_bar.init_ui(columns)
 
-    def get_query(self):
+    def delete(self):
         """
         This is method for getting and executing DELETE query
         """
 
-        chooser = self.chooser.get_str()
+        try:
+            chooser = self.chooser.get_str()
 
-        query = f"DELETE FROM `{self.table.get()}` " + chooser
+            query = f"DELETE FROM `{self.get_table()}` " + chooser
 
-        self.cursor.execute(query)
+            self.cursor.execute(query)
+
+            messagebox.showinfo("Done", "Information deleted")
+
+        except Exception as e:
+            print(e.args)
+            messagebox.showerror("Error", e.args[0])
+            return

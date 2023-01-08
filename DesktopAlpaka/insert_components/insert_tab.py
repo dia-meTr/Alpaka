@@ -9,7 +9,7 @@ from DesktopAlpaka.insert_components.insert_values_form import InsertValuesForm
 from DesktopAlpaka.my_sql import get_columns, get_tables
 
 
-class InsertTab(ttk.Frame):
+class InsertTab(tk.Frame):
     """
     This is class for Insert tab
     """
@@ -48,12 +48,12 @@ class InsertTab(ttk.Frame):
         table_chooser = ttk.Combobox(self.m_space, values=self.tables, textvariable=self.table)
         table_chooser.grid(row=0, column=0)
 
-        button_insert = tk.Button(self.m_space, text='INSERT', command=self.get_query)
+        button_insert = tk.Button(self.m_space, text='INSERT', command=self.insert)
         button_insert.grid(row=0, column=1)
 
         button_check = tk.Button(self.m_space, text='CHECK', command=self.check)
         button_check.grid(row=0, column=2)
-        
+
         self.values_form = InsertValuesForm(self.m_space, self.cursor, self.table.get())
         self.values_form.grid(row=1)
 
@@ -72,8 +72,8 @@ class InsertTab(ttk.Frame):
         """
         if self.table.get() not in self.tables:
             raise Exception('There is no such table')
-        else:
-            return self.table.get()
+
+        return self.table.get()
 
     def check(self):
         """
@@ -85,9 +85,9 @@ class InsertTab(ttk.Frame):
             columns = self.side_bar.get_fields()
             sql_request = f"SELECT {', '.join(columns)} " \
                           f"from `{table}`;"
-        except Exception as e:
-            print(e.args)
-            messagebox.showerror("Error", e.args[0])
+        except Exception as ex:
+            print(ex.args)
+            messagebox.showerror("Error", ex.args[0])
             return
 
         # Execute SQL request
@@ -98,21 +98,31 @@ class InsertTab(ttk.Frame):
         # Build a table
         self.table_view.make_view(columns, result)
 
-    def get_query(self):
+    def insert(self):
         """
         This is methode for getting and executing Insert query
         """
-        form_data = self.values_form.get_values()
+        try:
+            table = self.get_table()
+            form_data = self.values_form.get_values()
 
-        columns = [row[0] for row in form_data]
-        values = [row[1] for row in form_data]
-        n_columns = len(columns)
+            columns = [row[0] for row in form_data]
+            values = [row[1] for row in form_data]
+            n_columns = len(columns)
 
-        query = "INSERT INTO `" + self.table.get() + "` (`" + \
-                '`, `'.join(columns) + "`) " \
-                "VALUES (" + \
-                ', '.join(["%s"] * n_columns) + ");"
+            query = "INSERT INTO `" + table + "` (`" + \
+                    '`, `'.join(columns) + "`) " \
+                                           "VALUES (" + \
+                    ', '.join(["%s"] * n_columns) + ");"
+
+            self.cursor.execute(query, (*values,))
+
+            messagebox.showinfo("Done", "Information added")
+
+        except Exception as ex:
+            print(ex.args)
+            messagebox.showerror("Error", ex.args[0])
+            return
 
         print(query, (columns, values))
 
-        self.cursor.execute(query, (*values,))

@@ -46,7 +46,7 @@ class UpdateTab(tk.Frame):
         table_chooser = ttk.Combobox(self.m_space, values=self.tables, textvariable=self.table)
         table_chooser.grid(row=0, column=0)
 
-        update_button = tk.Button(self.m_space, text='UPDATE', command=self.get_query)
+        update_button = tk.Button(self.m_space, text='UPDATE', command=self.query_update)
         update_button.grid(row=0, column=1)
 
         button_check = tk.Button(self.m_space, text='CHECK', command=self.check)
@@ -114,17 +114,24 @@ class UpdateTab(tk.Frame):
 
         self.chooser.refresh(columns)
 
-    def get_query(self):
+    def query_update(self):
         """
         This is methode for getting and executing Update query
         """
-        form_data = self.new_values_form.get_values()
-        columns = [row[0] for row in form_data]
-        values = [row[1] for row in form_data]
+        try:
+            form_data = self.new_values_form.get_values()
+            chooser = self.chooser.get_str()
 
-        chooser = self.chooser.get_str()
+            columns = [row[0] for row in form_data]
+            values = [row[1] for row in form_data]
 
-        query = "UPDATE `" + self.table.get() + "` SET `" + \
-                '` = %s '.join(columns) + "` = %s " + chooser
+            query = "UPDATE `" + self.get_table() + "` SET `" + \
+                    '` = %s '.join(columns) + "` = %s " + chooser
 
-        self.cursor.execute(query, (*values,))
+            self.cursor.execute(query, (*values,))
+
+            messagebox.showinfo("Done", "Information updated")
+        except Exception as e:
+            print(e.args)
+            messagebox.showerror("Error", e.args[0])
+            return

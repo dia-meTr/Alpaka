@@ -1,3 +1,5 @@
+"""This module describes select tab class"""
+
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
@@ -84,15 +86,17 @@ class SelectTab(Frame):
             sql_request += self.filter_chooser.get_str()
 
             sql_request += self.sort_block.get_query_piece()
-        except Exception as e:
-            print(e.args)
-            messagebox.showerror("Error", e.args[0])
+
+            self.cursor.execute(sql_request)
+            result = self.cursor.fetchall()
+
+        except Exception as ex:
+            print(ex.args)
+            messagebox.showerror("Error", ex.args[0])
             return
 
         # Execute SQL request
         print(sql_request)
-        self.cursor.execute(sql_request)
-        result = self.cursor.fetchall()
 
         # Build a table
         self.table_view.make_view(columns, result)
@@ -103,8 +107,8 @@ class SelectTab(Frame):
         """
         if self.table.get() not in self.tables:
             raise Exception('There is no such table')
-        else:
-            return self.table.get()
+
+        return self.table.get()
 
     def refresh_columns(self):
         """
