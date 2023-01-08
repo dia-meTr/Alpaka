@@ -3,41 +3,19 @@
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
-from tkinter import Frame
-from DesktopAlpaka.base_classes.table import Table
-from DesktopAlpaka.my_sql import get_columns, get_tables
-from DesktopAlpaka.sidebar.sidebar import Sidebar
+from DesktopAlpaka.my_sql import get_columns
 from DesktopAlpaka.select_components.filter_data import Filter
 from DesktopAlpaka.select_components.sort_data import Sorter
+from DesktopAlpaka.base_classes.tab import Tab
 
 
-class SelectTab(Frame):
+class SelectTab(Tab):  # pylint: disable=too-many-ancestors
     """
     This is class for creating sql query
     """
 
     def __init__(self, root, my_cursor):
-        super().__init__(root)
-        self.cursor = my_cursor
-        self.tables = get_tables(self.cursor)
-        print(self.tables)
-
-        self.table = tk.StringVar()
-        self.table.trace('w', lambda *args: self.refresh_columns())
-
-        # Rows&Columns configuration
-        self.columnconfigure(0, weight=3, uniform='column')
-        self.rowconfigure(0, weight=1, uniform='row')
-        self.columnconfigure(1, weight=8, uniform='column')
-        self.rowconfigure(1, weight=1, uniform='row')
-
-        # Creating window parts
-        self.side_bar = Sidebar(self, relief=tk.RIDGE, borderwidth=5)
-        self.m_space = tk.Frame(self, relief=tk.RIDGE, borderwidth=5)
-        self.table_view = Table(self, relief=tk.RIDGE, borderwidth=5)
-        self.side_bar.grid(row=0, column=0, sticky="nsew")
-        self.m_space.grid(row=0, column=1, sticky="nsew")
-        self.table_view.grid(row=1, column=0, columnspan=2, sticky="nsew")
+        super().__init__(root, my_cursor)
 
         # Initialising UIs
         self.sort_block = Sorter(self.m_space, self.cursor, self.table.get())
@@ -52,8 +30,8 @@ class SelectTab(Frame):
         """
 
         # Combobox for choosing table
-        cb_chose_table = ttk.Combobox(self.m_space, values=self.tables, textvariable=self.table)
-        cb_chose_table.grid(row=0)
+        chose_table = ttk.Combobox(self.m_space, values=self.tables, textvariable=self.table)
+        chose_table.grid(row=0)
 
         # Order by
         self.sort_block = Sorter(self.m_space, self.cursor, self.table.get())
@@ -66,13 +44,13 @@ class SelectTab(Frame):
 
         self.filter_chooser = Filter(self.m_space, [])
         self.filter_chooser.init_ui()
-        self.filter_chooser.grid(row=3, column=0)
+        self.filter_chooser.grid(row=3, column=0, columnspan=50)
 
         # SELECT button
-        select_button = tk.Button(self.m_space, text='Select', command=self.select)
-        select_button.grid(row=0, column=50, sticky='es')
+        select_button = tk.Button(self.m_space, text='Select', command=self.get_query)
+        select_button.grid(row=0, column=1, sticky='es')
 
-    def select(self):
+    def get_query(self):
         """
         Executing and formation of query
         """
@@ -101,16 +79,7 @@ class SelectTab(Frame):
         # Build a table
         self.table_view.make_view(columns, result)
 
-    def get_table(self):
-        """
-        This is method for getting table and handling "No such table" error
-        """
-        if self.table.get() not in self.tables:
-            raise Exception('There is no such table')
-
-        return self.table.get()
-
-    def refresh_columns(self):
+    def refresh_tab(self):
         """
         This method is called when user change table name
         """
