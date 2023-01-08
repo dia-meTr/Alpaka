@@ -1,11 +1,15 @@
 import tkinter as tk
 from tkinter import ttk
-from DesktopAlpaka.base_classes.table import Table, get_columns, get_tables
+from DesktopAlpaka.base_classes.table import Table
 from DesktopAlpaka.sidebar.sidebar import Sidebar
 from DesktopAlpaka.insert_components.insert_values_form import InsertValuesForm
+from DesktopAlpaka.my_sql import get_columns, get_tables
 
 
 class InsertTab(ttk.Frame):
+    """
+    This is class for Insert tab
+    """
     def __init__(self, root, my_cursor):
         super().__init__(root)
 
@@ -30,11 +34,14 @@ class InsertTab(ttk.Frame):
         self.table_view = Table(self, relief=tk.RIDGE, borderwidth=5)
         self.table_view.grid(row=1, column=0, columnspan=2, sticky="nsew")
 
-        self.m_space = tk.Frame(self, my_cursor, relief=tk.RIDGE, borderwidth=5)
+        self.m_space = tk.Frame(self, relief=tk.RIDGE, borderwidth=5)
         self.m_space.grid(row=0, column=1, sticky="nsew")
         self.init_ui()
 
     def init_ui(self):
+        """
+        This is methode for initialisation of UI
+        """
         table_chooser = ttk.Combobox(self.m_space, values=self.tables, textvariable=self.table)
         table_chooser.grid(row=0, column=0)
 
@@ -47,7 +54,6 @@ class InsertTab(ttk.Frame):
     def refresh_panel(self):
         """
         refresh information panel after changing table
-        :return:
         """
         self.values_form.table = self.table.get()
         self.values_form.refresh_panel()
@@ -55,6 +61,9 @@ class InsertTab(ttk.Frame):
         self.side_bar.init_ui([el.field_name for el in self.values_form.fields])
 
     def get_query(self):
+        """
+        This is methode for getting and executing Insert query
+        """
         form_data = self.values_form.get_values()
 
         columns = [row[0] for row in form_data]
@@ -69,5 +78,3 @@ class InsertTab(ttk.Frame):
         print(query, (columns, values))
 
         self.cursor.execute(query, (*values,))
-
-

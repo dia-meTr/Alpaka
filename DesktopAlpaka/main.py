@@ -1,12 +1,26 @@
 import tkinter as tk
-from working_area import Main
-from DesktopAlpaka.connector import my_cursor
+from working_area import WorkingArea
+from DesktopAlpaka.connection_tab import ConnectionTab
+from DesktopAlpaka.my_sql import connect_to_bd
+
+
+def connect(connection_params):
+    global window
+    window.destroy()
+    global mydb, my_cursor
+    connection = connect_to_bd(connection_params)
+    my_cursor = connection[0]
+    mydb = connection[1]
+    window = WorkingArea(app, my_cursor)
+    window.pack()
 
 
 if __name__ == '__main__':
-    window = tk.Tk()
-    window.geometry("1100x600")
-    m = Main(window, my_cursor)
-    m.pack()
+    my_cursor = None
+    mydb = None
+    app = tk.Tk()
+    app.geometry("1100x600")
+    window = ConnectionTab(app, connect)
+    window.pack(expand=True)
 
-    window.mainloop()
+    app.mainloop()

@@ -4,10 +4,16 @@ from tkinter import ttk
 
 
 class Table(Frame):
+    """
+    This class represents data view in table
+    """
     def __init__(self, root, *args, **kwargs):
         super().__init__(root, *args, **kwargs)
 
     def make_view(self, columns, table):
+        """
+        This function refresh table with new values
+        """
         self.clear()
 
         tree = ttk.Treeview(self, column=columns, show='headings')
@@ -25,29 +31,9 @@ class Table(Frame):
         scrollbar.pack(fill=tk.Y, side=tk.RIGHT)
 
     def clear(self):
+        """
+        This function clears table
+        """
         # destroy all widgets from frame
         for widget in self.winfo_children():
             widget.destroy()
-
-
-def get_tables(cursor):
-    cursor.execute("SHOW TABLES")
-    result = cursor.fetchall()
-    tables = [x[0] for x in result]
-    return tables
-
-
-def get_columns(table, cursor):
-    columns = []
-
-    # If table variable is not empty:
-    if table != '':
-        # Executing SHOW columns... request
-        cursor.execute(f"SHOW columns FROM `{table}`")
-        res = cursor.fetchall()
-        # print(res)
-
-        # Creating list with columns
-        columns = [x[0] for x in res]
-
-    return columns

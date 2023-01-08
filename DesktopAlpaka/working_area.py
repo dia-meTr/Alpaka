@@ -5,7 +5,7 @@ from DesktopAlpaka.update_components.update_tab import UpdateTab
 from DesktopAlpaka.delete_components.delete_tab import DeleteTab
 
 
-class Main(ttk.Frame):
+class WorkingArea(ttk.Frame):
     def __init__(self, root, my_cursor):
         super().__init__()
         self.cursor = my_cursor

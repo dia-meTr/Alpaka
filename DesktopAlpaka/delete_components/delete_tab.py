@@ -1,12 +1,15 @@
 import tkinter as tk
 from tkinter import ttk
-
+from DesktopAlpaka.my_sql import get_tables, get_columns, connect_to_bd
 from DesktopAlpaka.select_components.filter_data import Filter
 from DesktopAlpaka.sidebar.sidebar import Sidebar
-from DesktopAlpaka.base_classes.table import get_tables, Table, get_columns
+from DesktopAlpaka.base_classes.table import Table
 
 
 class DeleteTab(tk.Frame):
+    """
+    This is class for delete tab
+    """
     def __init__(self, root, my_cursor):
         super().__init__(root)
         self.chooser = None
@@ -32,6 +35,9 @@ class DeleteTab(tk.Frame):
         self.init_ui()
 
     def init_ui(self):
+        """
+        This is methode for initialisation of UI
+        """
         table_chooser = ttk.Combobox(self.m_space, values=self.tables, textvariable=self.table)
         table_chooser.grid(row=0, column=0)
 
@@ -43,11 +49,17 @@ class DeleteTab(tk.Frame):
         self.chooser.grid()
 
     def refresh_columns(self):
+        """
+        This is method for refreshing page after table was changed
+        """
         columns = get_columns(self.table.get(), self.cursor)
 
         self.chooser.refresh(columns)
 
     def get_query(self):
+        """
+        This is method for getting and executing DELETE query
+        """
 
         chooser = self.chooser.get_str()
 

@@ -2,7 +2,8 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
 from tkinter import Frame
-from DesktopAlpaka.base_classes.table import Table, get_tables, get_columns
+from DesktopAlpaka.base_classes.table import Table
+from DesktopAlpaka.my_sql import get_columns, get_tables
 from DesktopAlpaka.sidebar.sidebar import Sidebar
 from DesktopAlpaka.select_components.filter_data import Filter
 from DesktopAlpaka.select_components.sort_data import Sorter
@@ -10,13 +11,14 @@ from DesktopAlpaka.select_components.sort_data import Sorter
 
 class SelectTab(Frame):
     """
-    class for creating sql query
+    This is class for creating sql query
     """
 
     def __init__(self, root, my_cursor):
         super().__init__(root)
         self.cursor = my_cursor
         self.tables = get_tables(self.cursor)
+        print(self.tables)
 
         self.table = tk.StringVar()
         self.table.trace('w', lambda *args: self.refresh_columns())
@@ -44,8 +46,7 @@ class SelectTab(Frame):
 
     def init_ui(self):
         """
-        Initialising UI for select tab
-        :return:
+        This is methode for initialising UI for select tab
         """
 
         # Combobox for choosing table
@@ -97,6 +98,9 @@ class SelectTab(Frame):
         self.table_view.make_view(columns, result)
 
     def get_table(self):
+        """
+        This is method for getting table and handling "No such table" error
+        """
         if self.table.get() not in self.tables:
             raise Exception('There is no such table')
         else:
@@ -104,7 +108,7 @@ class SelectTab(Frame):
 
     def refresh_columns(self):
         """
-        refreshing columns list for left sidebar and order_by checkbox
+        This method is called when user change table name
         """
         # Get columns in table
         columns = get_columns(self.table.get(), self.cursor)

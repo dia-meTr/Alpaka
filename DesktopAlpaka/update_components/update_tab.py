@@ -3,7 +3,8 @@ from tkinter import ttk
 from DesktopAlpaka.update_components.update_values_form import UpdateValuesForm
 from DesktopAlpaka.select_components.filter_data import Filter
 from DesktopAlpaka.sidebar.sidebar import Sidebar
-from DesktopAlpaka.base_classes.table import Table, get_tables, get_columns
+from DesktopAlpaka.base_classes.table import Table
+from DesktopAlpaka.my_sql import get_tables, get_columns
 
 
 class UpdateTab(tk.Frame):
@@ -65,7 +66,6 @@ class UpdateTab(tk.Frame):
         self.chooser.refresh(columns)
 
     def get_query(self):
-
         form_data = self.new_values_form.get_values()
         columns = [row[0] for row in form_data]
         values = [row[1] for row in form_data]
