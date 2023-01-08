@@ -11,7 +11,7 @@ def connect(connection_params):
     connection = connect_to_bd(connection_params)
     my_cursor = connection[0]
     mydb = connection[1]
-    window = WorkingArea(app, my_cursor)
+    window = WorkingArea(app, my_cursor, mydb)
     window.pack()
 
 
