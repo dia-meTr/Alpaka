@@ -2,7 +2,7 @@ from insert_components.insert_field import InsertField
 from base_classes.values_form import ValuesForm
 
 
-class InsertValuesForm(ValuesForm):
+class InsertValuesForm(ValuesForm):  # pylint: disable=too-many-ancestors
     """
     This class inherits ValuesForm and override
     new_field method for Insert needs
@@ -15,5 +15,5 @@ class InsertValuesForm(ValuesForm):
         method for creating new fields and then
         adding them to form
         """
-        field = InsertField(self, self.cursor, self.table, *el)
+        field = InsertField(self, self.cursor, self.table, el)
         return field

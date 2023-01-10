@@ -15,5 +15,5 @@ class UpdateValuesForm(ValuesForm):
             method for creating new fields and then
             adding them to form
         """
-        field = UpdateField(self, self.cursor, self.table, *el)
+        field = UpdateField(self, self.cursor, self.table, el)
         return field

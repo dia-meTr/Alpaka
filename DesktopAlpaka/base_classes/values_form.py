@@ -39,7 +39,7 @@ class ValuesForm(ttk.Frame):
         """
         This method creates new field for form
         """
-        field = Field(self, self.cursor, self.table.get(), *el)
+        field = Field(self, self.cursor, self.table.get(), el)
         return field
 
     def get_values(self):
