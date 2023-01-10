@@ -3,6 +3,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
+import mysql.connector
 from my_sql import get_columns
 from base_classes.filter.filter_data import Filter
 from select_components.sort_data import Sorter
@@ -72,6 +73,9 @@ class SelectTab(Tab):  # pylint: disable=too-many-ancestors
         except MySQLError as ex:
             print(ex.args)
             messagebox.showerror("Error", ex.args[0])
+            return
+        except mysql.connector.errors.DatabaseError:
+            messagebox.showerror("Error", "Data type error")
             return
 
         # Execute SQL request

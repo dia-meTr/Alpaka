@@ -1,10 +1,16 @@
-""""""
+"""
+This is module for building a filter
+"""
 import tkinter as tk
 from base_classes.filter.filter_block import FilterBlock
 
 
 class FiltersHolder(tk.Frame):
-    """"""
+    """
+    This is class for a line of filters
+    It build a line of filters connected with "and"
+    and add new filter after pressing "AND" button
+    """
     def __init__(self, root, columns, func):
         super().__init__(root, relief=tk.RAISED, borderwidth=3)
         self.columns = columns
@@ -16,7 +22,7 @@ class FiltersHolder(tk.Frame):
         self.init_ui()
 
     def init_ui(self):
-        """"""
+        """This is method that initialise UI of Filter Holder"""
         block = FilterBlock(self, self.columns)
         block.grid(row=0, column=self.count, rowspan=4)
         self.blocks.append(block)
@@ -25,7 +31,9 @@ class FiltersHolder(tk.Frame):
         self.button.grid(row=2, column=self.count + 1)
 
     def click_and(self):
-        """"""
+        """This is method for adding new Filter Block to the line
+        It's called when "AND" button is pressed"""
+
         self.count += 1
 
         block = FilterBlock(self, self.columns)
@@ -36,7 +44,8 @@ class FiltersHolder(tk.Frame):
         self.update_scroll_bar()
 
     def get_str(self):
-        """"""
+        """This method forms piece of sql request responsible
+        for all filters inside of current holder"""
         filters = []
         for i in range(self.count):
             if self.blocks[i].is_full():
@@ -67,7 +76,7 @@ class Filter(tk.Frame):
         self.update_scroll_bar = func
 
     def init_ui(self):
-        """"""
+        """This is method that initialise UI of Filter Block"""
         holder = FiltersHolder(self, self.columns, self.update_scroll_bar)
         holder.grid(row=self.count, column=0)
         self.block_holders.append(holder)
@@ -76,7 +85,8 @@ class Filter(tk.Frame):
         self.button_or.grid(row=self.count + 1, column=0)
 
     def or_operator(self):
-        """"""
+        """This is method for adding new Filter Holder to the Filter
+        It's called when "OR" button is pressed"""
         self.count += 1
 
         holder = FiltersHolder(self, self.columns, self.update_scroll_bar)
@@ -87,7 +97,8 @@ class Filter(tk.Frame):
         self.update_scroll_bar()
 
     def get_str(self):
-        """"""
+        """This method forms piece of sql request responsible
+        for filters"""
         filters = []
         for i in range(self.count):
             if self.block_holders[i].get_str() is not None:
@@ -106,7 +117,8 @@ class Filter(tk.Frame):
         return filter_line
 
     def refresh(self, columns):
-        """"""
+        """This method cleans all filter holders and create one
+        empty Filter Block as at the beginning"""
         self.columns = columns
 
         self.block_holders.clear()
