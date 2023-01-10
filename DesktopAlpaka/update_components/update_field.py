@@ -1,4 +1,4 @@
-from DesktopAlpaka.base_classes.field import Field
+from base_classes.field import Field
 
 
 class UpdateField(Field):

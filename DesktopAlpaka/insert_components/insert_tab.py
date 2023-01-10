@@ -2,8 +2,9 @@
 
 import tkinter as tk
 from tkinter import messagebox
-from DesktopAlpaka.insert_components.insert_values_form import InsertValuesForm
-from DesktopAlpaka.base_classes.tab import Tab
+from insert_components.insert_values_form import InsertValuesForm
+from base_classes.tab import Tab
+from base_classes.Error import MySQLError
 
 
 class InsertTab(Tab):  # pylint: disable=too-many-ancestors
@@ -67,7 +68,7 @@ class InsertTab(Tab):  # pylint: disable=too-many-ancestors
 
             messagebox.showinfo("Done", "Information added")
 
-        except Exception as ex:
+        except MySQLError as ex:
             print(ex.args)
             messagebox.showerror("Error", ex.args[0])
             return

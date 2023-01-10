@@ -1,8 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
 from constants import type_groups
-from DesktopAlpaka.base_classes.DateTimePicker import DateTimePicker
-from DesktopAlpaka.my_sql import get_relation
+from base_classes.DateTimePicker import DateTimePicker
+from my_sql import get_relation
+from base_classes.Error import MySQLError
 
 
 class Field(tk.Frame):
@@ -71,7 +72,7 @@ class Field(tk.Frame):
             elif self.group_type == 'float':
                 value = float(value)
         except ValueError:
-            raise Exception(f"Sorry, column '{self.field_name}' have to be {self.group_type}")
+            raise MySQLError(f"Sorry, column '{self.field_name}' have to be {self.group_type}")
 
         return value
 

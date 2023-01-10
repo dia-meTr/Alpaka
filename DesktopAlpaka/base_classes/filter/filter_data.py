@@ -1,6 +1,6 @@
 """"""
 import tkinter as tk
-from DesktopAlpaka.base_classes.filter.filter_block import FilterBlock
+from base_classes.filter.filter_block import FilterBlock
 
 
 class FiltersHolder(tk.Frame):

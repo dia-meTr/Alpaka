@@ -1,5 +1,5 @@
-from DesktopAlpaka.update_components.update_field import UpdateField
-from DesktopAlpaka.base_classes.values_form import ValuesForm
+from update_components.update_field import UpdateField
+from base_classes.values_form import ValuesForm
 
 
 class UpdateValuesForm(ValuesForm):

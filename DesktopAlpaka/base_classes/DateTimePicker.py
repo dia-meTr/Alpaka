@@ -13,8 +13,8 @@ class DateTimePicker(tk.Toplevel):
         self.time = [tk.StringVar(), tk.StringVar(), tk.StringVar()]
         self.days = [tk.StringVar(), tk.StringVar(), tk.StringVar()]
 
-        if self.option == 'DATETIME' or self.option == 'DATE':
-            self.data_chooser()
+        # if self.option == 'DATETIME' or self.option == 'DATE':
+        self.data_chooser()
 
         if self.option == 'DATETIME' or self.option == 'TIME' or self.option == 'TIMESTAMP':
             self.time_chooser()

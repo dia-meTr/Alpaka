@@ -1,4 +1,5 @@
 import tkinter as tk
+from base_classes.Error import MySQLError
 
 
 class Sidebar(tk.Frame):
@@ -45,7 +46,7 @@ class Sidebar(tk.Frame):
             if value[1].get():
                 res.append(key)
         if not res:
-            raise Exception(f"You have to choose at least one field")
+            raise MySQLError(f"You have to choose at least one field")
         return res
 
     def clear(self):

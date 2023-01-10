@@ -12,9 +12,9 @@ class FilterBlock(tk.Frame):
         self.operators = {'Equal': '=',
                           'Not equal': '!=',
                           'Greater than': '>',
-                          'Greater than or equal': '=>',
+                          'Greater than or equal': '>=',
                           'Less than': '<',
-                          'Less than or equal': '=<'}
+                          'Less than or equal': '<='}
 
         self.column1 = tk.StringVar()
         self.operator_str = tk.StringVar()

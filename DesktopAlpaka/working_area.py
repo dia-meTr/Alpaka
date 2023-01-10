@@ -4,11 +4,11 @@ Area, where five tabs are created and theirs classes are caled
 """
 from tkinter import ttk
 import tkinter as tk
-from DesktopAlpaka.insert_components.insert_tab import InsertTab
-from DesktopAlpaka.select_components.select_tab import SelectTab
-from DesktopAlpaka.update_components.update_tab import UpdateTab
-from DesktopAlpaka.delete_components.delete_tab import DeleteTab
-from DesktopAlpaka.actions_tab import ActionsTab
+from insert_components.insert_tab import InsertTab
+from select_components.select_tab import SelectTab
+from update_components.update_tab import UpdateTab
+from delete_components.delete_tab import DeleteTab
+from actions_tab import ActionsTab
 
 
 class WorkingArea(tk.Frame):

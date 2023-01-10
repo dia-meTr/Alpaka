@@ -1,7 +1,7 @@
 import tkinter as tk
 from working_area import WorkingArea
-from DesktopAlpaka.connection_tab import ConnectionTab
-from DesktopAlpaka.my_sql import connect_to_bd
+from connection_tab import ConnectionTab
+from my_sql import connect_to_bd
 
 
 def connect(connection_params, privileges):

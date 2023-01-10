@@ -14,10 +14,10 @@ def clear_connect_info():
     }
     json_params = json.dumps(params, indent=4)
 
-    print(os.getcwd() + "/DesktopAlpaka/info.json")
+    print(os.getcwd() + "/info.json")
 
     # Writing to sample.json
-    with open(os.getcwd() + "/DesktopAlpaka/info.json", "w") as outfile:
+    with open("info.json", "w") as outfile:
         outfile.write(json_params)
 
 

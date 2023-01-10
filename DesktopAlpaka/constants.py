@@ -1,4 +1,3 @@
-import os
 
 
 type_groups = {
@@ -47,7 +46,3 @@ type_groups = {
     'DATETIME': 'datetime',
     'TIMESTAMP': 'datetime',
 }
-
-script_dir = os.path.dirname(__file__)
-
-api_link = "http://127.0.0.1:5000/api/v1/"

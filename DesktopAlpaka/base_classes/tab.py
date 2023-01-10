@@ -1,10 +1,11 @@
 """This module describes update tab class"""
 
 import tkinter as tk
-from tkinter import ttk, Scrollbar, messagebox
-from DesktopAlpaka.sidebar.sidebar import Sidebar
-from DesktopAlpaka.base_classes.table import Table
-from DesktopAlpaka.my_sql import get_tables
+from tkinter import ttk, messagebox
+from sidebar.sidebar import Sidebar
+from base_classes.table import Table
+from my_sql import get_tables
+from base_classes.Error import MySQLError
 
 
 class Tab(tk.Frame):
@@ -80,9 +81,9 @@ class Tab(tk.Frame):
         This is method for getting table and handling "No such table" error
         """
         if self.table.get() == "":
-            raise Exception("You haven't chose a table")
+            raise MySQLError("You haven't chose a table")
         elif self.table.get() not in self.tables:
-            raise Exception('There is no such table')
+            raise MySQLError('There is no such table')
         else:
             return self.table.get()
 

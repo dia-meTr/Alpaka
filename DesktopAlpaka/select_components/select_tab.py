@@ -3,10 +3,11 @@
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
-from DesktopAlpaka.my_sql import get_columns
-from DesktopAlpaka.base_classes.filter.filter_data import Filter
-from DesktopAlpaka.select_components.sort_data import Sorter
-from DesktopAlpaka.base_classes.tab import Tab
+from my_sql import get_columns
+from base_classes.filter.filter_data import Filter
+from select_components.sort_data import Sorter
+from base_classes.tab import Tab
+from base_classes.Error import MySQLError
 
 
 class SelectTab(Tab):  # pylint: disable=too-many-ancestors
@@ -68,7 +69,7 @@ class SelectTab(Tab):  # pylint: disable=too-many-ancestors
             self.cursor.execute(sql_request)
             result = self.cursor.fetchall()
 
-        except Exception as ex:
+        except MySQLError as ex:
             print(ex.args)
             messagebox.showerror("Error", ex.args[0])
             return

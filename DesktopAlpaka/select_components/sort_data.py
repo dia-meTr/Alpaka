@@ -1,7 +1,8 @@
 """This is module for describing sort pannel"""
 import tkinter as tk
 from tkinter import ttk
-from DesktopAlpaka.my_sql import get_columns
+from my_sql import get_columns
+from base_classes.Error import MySQLError
 
 
 class Sorter(tk.Frame):
@@ -56,6 +57,6 @@ class Sorter(tk.Frame):
             if self.reverse.get():
                 result += " DESC"
         elif column != '':
-            raise Exception(f'There is no such column: {column}')
+            raise MySQLError(f'There is no such column: {column}')
 
         return result
