@@ -56,12 +56,10 @@ class FilterBlock(tk.Frame):
             statement += f"`{self.column1.get()}`"
         else:
             raise MySQLError(f"Unknown column {column}")
-            return
         try:
             statement += f" {self.operators[operator]} "
-        except KeyError:
-            raise MySQLError(f"Unknown comparison string {operator}")
-            return
+        except KeyError as ex:
+            raise MySQLError(f"Unknown comparison string {operator}") from ex
 
         if value.lstrip("-").replace('.', '', 1).isnumeric():
             statement += value

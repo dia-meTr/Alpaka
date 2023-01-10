@@ -66,7 +66,11 @@ class FiltersHolder(tk.Frame):
 
 
 class Filter(tk.Frame):
-    """"""
+    """
+    This is class for all filters
+    It is build of line of filters connected with "or"
+    and add new filter after pressing "ORD" button
+    """
     def __init__(self, root, columns, func):
         super().__init__(root)
         self.columns = columns
