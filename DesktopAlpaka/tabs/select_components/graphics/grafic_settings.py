@@ -1,12 +1,13 @@
+"""This is module for settings of a graphic"""
 import tkinter as tk
 from tkinter import ttk, messagebox
-from mysql.connector import FieldType
-from constants import type_groups
 from tabs.select_components.graphics.graphic import Graphic
 from my_sql import get_table_info
+from constants import type_groups
 
 
 class GraphicSettings:
+    """This is class for graphic settings"""
     def __init__(self, cursor):
         super().__init__()
         self.window = None
@@ -18,6 +19,7 @@ class GraphicSettings:
         self.table = None
 
     def init_ui(self, filters, sorter):
+        """This is methode for initialising"""
         self.window = tk.Toplevel()
 
         l_title = tk.Label(self.window, text="This is a chart customization tool")
@@ -33,10 +35,12 @@ class GraphicSettings:
         self.height_picker = ttk.Combobox(self.window, values=self.numbers_fields())
         self.height_picker.grid(row=2, column=1)
 
-        draw_button = tk.Button(self.window, text="Draw", command=lambda: self.draw(filters, sorter))
+        draw_button = tk.Button(self.window, text="Draw",
+                                command=lambda: self.draw(filters, sorter))
         draw_button.grid(row=3)
 
     def refresh(self, table, columns):
+        """This is methode for refreshing settings"""
         self.table = table
         self.types.clear()
         self.columns = columns
@@ -46,14 +50,18 @@ class GraphicSettings:
             self.types[item[0]] = item[1]
 
     def numbers_fields(self):
+        """This is methode for getting a list of
+        fields with number values"""
         numbers = []
 
         for key, value in self.types.items():
-            if type_groups[value] == 'number' or type_groups[value] == 'float' or type_groups[value] == 'binary':
+            if type_groups[value] in ['number', 'float', 'binary']:
                 numbers.append(key)
         return numbers
 
     def draw(self, filters, sorter):
+        """This is methode for creating a Graphic
+        Called when "Draw" button is pressed"""
         names = self.names_picker.get()
         heights = self.height_picker.get()
         if names not in self.columns:

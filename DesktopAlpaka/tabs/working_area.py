@@ -18,6 +18,7 @@ class WorkingArea(tk.Frame):
     def __init__(self, root, my_cursor, conn, privileges):
         super().__init__()
         self.cursor = my_cursor
+        self.conn = conn
         tab_control = ttk.Notebook(root)
 
         self.tab_select = SelectTab(tab_control, self.cursor)
@@ -35,7 +36,7 @@ class WorkingArea(tk.Frame):
             self.tab_delete = DeleteTab(tab_control,  self.cursor)
             tab_control.add(self.tab_delete, text='DELETE')
 
-        self.tab_actions = ActionsTab(tab_control, self.cursor, conn)
+        self.tab_actions = ActionsTab(tab_control, self.cursor, self.conn)
         tab_control.add(self.tab_actions, text='ACTIONS')
 
         tab_control.pack(expand=1, fill="both")

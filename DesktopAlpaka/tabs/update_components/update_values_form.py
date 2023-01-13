@@ -3,10 +3,10 @@ This is module for overriding
 ValuesForm for Update needs
 """
 from tabs.update_components.update_field import UpdateField
-from values_form.values_form import ValuesForm
+from values_form_components.values_form import ValuesForm
 
 
-class UpdateValuesForm(ValuesForm):
+class UpdateValuesForm(ValuesForm):  # pylint: disable=too-many-ancestors
     """
     This class inherits ValuesForm and override
     new_field method for Update needs

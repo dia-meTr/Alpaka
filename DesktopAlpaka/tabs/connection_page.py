@@ -1,8 +1,8 @@
 """This is module for connection page"""
 import json
 import tkinter as tk
-import mysql.connector
 from tkinter import messagebox
+import mysql.connector
 from my_sql import connect_to_bd, get_privileges
 from base_classes.error import MySQLError
 
@@ -55,7 +55,7 @@ class ConnectionPage(tk.Frame):
         if self.changes_applied():
             self.ask_to_save()
 
-        self.func(self.new_params, privileges)
+        self.func(self.new_params, privileges, self)
 
     def init_ui(self):
         """
@@ -109,7 +109,7 @@ class ConnectionPage(tk.Frame):
         parameters to json file
         """
         json_params = json.dumps(self.new_params, indent=4)
-        filename = '../info.json'  # os.path.join(os.path.dirname(sys.executable), 'info.json')
+        filename = 'info.json'  # os.path.join(os.path.dirname(sys.executable), 'info.json')
 
         # Writing to sample.json
         with open(filename, "w", encoding="utf-8") as outfile:

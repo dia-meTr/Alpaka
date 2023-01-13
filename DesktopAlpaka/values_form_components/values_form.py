@@ -4,7 +4,7 @@ It creates a form where user have to
 enter new values for table
 """
 import tkinter as tk
-from values_form.field import Field
+from values_form_components.field import Field
 from my_sql import get_table_info
 
 

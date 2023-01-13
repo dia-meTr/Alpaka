@@ -1,5 +1,5 @@
 """This is module for fields class for updating purposes"""
-from values_form.field import Field
+from values_form_components.field import Field
 from base_classes.error import MySQLError
 
 

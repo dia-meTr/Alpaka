@@ -1,7 +1,7 @@
 """frequently used functions that perform database queries"""
 
-from mysql.connector import FieldType
 import mysql.connector
+from mysql.connector import FieldType
 from base_classes.error import MySQLError
 
 
@@ -26,7 +26,8 @@ def get_privileges(user, cursor):
         result = cursor.fetchall()
         print(result[0])
     except mysql.connector.errors.ProgrammingError:
-        raise MySQLError("It seems like you don't have enough rights to use this app")
+        raise MySQLError("It seems like you don't have enough rights to use this app") \
+            from mysql.connector.errors.ProgrammingError
 
     return result[0]
 

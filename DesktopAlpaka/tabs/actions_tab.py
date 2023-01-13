@@ -3,7 +3,6 @@ import json
 import tkinter as tk
 from tkinter import messagebox
 import os
-from tabs.select_components.graphics.graphic import Graphic
 
 
 def clear_connect_info():

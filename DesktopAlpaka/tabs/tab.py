@@ -25,7 +25,7 @@ class Tab(tk.Frame):
         self.table = tk.StringVar()
         self.table.trace('w', lambda *args: self.refresh_tab())
 
-        # self.values_form = None
+        # self.values_form_components = None
         # self.chooser = None
 
         # Rows&Columns configuration
