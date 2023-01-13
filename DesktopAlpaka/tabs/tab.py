@@ -3,9 +3,9 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from tabs.sidebar.sidebar import Sidebar
-from base_classes.table import Table
 from my_sql import get_tables
-from base_classes.Error import MySQLError
+from base_classes.table import Table
+from base_classes.error import MySQLError
 
 
 class Tab(tk.Frame):
@@ -60,6 +60,7 @@ class Tab(tk.Frame):
         self.canvas.create_window(0, 0, window=self.m_space, anchor=tk.NW)
 
     def update_scroll_region(self):
+        """This is function for updating scrollbar after widget was added"""
         self.canvas.update_idletasks()
         self.canvas.config(scrollregion=self.m_space.bbox())
 
@@ -83,10 +84,10 @@ class Tab(tk.Frame):
         """
         if self.table.get() == "":
             raise MySQLError("You haven't chose a table")
-        elif self.table.get() not in self.tables:
+        if self.table.get() not in self.tables:
             raise MySQLError('There is no such table')
-        else:
-            return self.table.get()
+
+        return self.table.get()
 
     def check(self):
         """
@@ -100,9 +101,9 @@ class Tab(tk.Frame):
                           f"from `{table}` "
             if self.chooser is not None:
                 sql_request += self.chooser.get_str()
-        except Exception as e:
-            print(e.args)
-            messagebox.showerror("Error", e.args[0])
+        except MySQLError as ex:
+            print(ex.args)
+            messagebox.showerror("Error", ex.args[0])
             return
 
         # Execute SQL request
@@ -118,7 +119,7 @@ class Tab(tk.Frame):
         refresh information in tab after changing table and will be
         overriden in all derived classes
         """
-        pass
+        pass  # pylint: disable=unnecessary-pass
 
     def get_query(self):
         """
@@ -126,4 +127,4 @@ class Tab(tk.Frame):
         overriden in all derived classes
 
         """
-        pass
+        pass  # pylint: disable=unnecessary-pass

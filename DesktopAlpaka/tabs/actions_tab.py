@@ -19,7 +19,7 @@ def clear_connect_info():
     print(os.getcwd() + "/info.json")
 
     # Writing to sample.json
-    with open("info.json", "w") as outfile:
+    with open("info.json", "w", encoding="utf-8") as outfile:
         outfile.write(json_params)
 
 
@@ -56,10 +56,8 @@ class ActionsTab(tk.Frame):
         button_revert = tk.Button(buttons, text="Revert changes", command=self.revert)
         button_revert.grid(row=1, pady=5)
 
-        button_graph = tk.Button(buttons, text="Create graphic", command=self.graph)
-        button_graph.grid(row=2, pady=5)
-
-        button_clear_info = tk.Button(buttons, text="Clear connection info", command=clear_connect_info)
+        button_clear_info = tk.Button(buttons, text="Clear connection info",
+                                      command=clear_connect_info)
         button_clear_info.grid(row=3, pady=5)
 
     def save(self):
@@ -71,10 +69,3 @@ class ActionsTab(tk.Frame):
         """This is method for reverting changes"""
         self.conn.rollback()
         messagebox.showinfo("Done", "Changes Revert")
-
-    def graph(self):
-        """This is method for creating graph"""
-        g = Graphic(self.cursor)
-        g.draw()
-        print("New Graphic")
-        messagebox.showinfo("Done", "Graphic Created")

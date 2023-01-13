@@ -1,4 +1,4 @@
-
+"""Constants of a project"""
 
 type_groups = {
     'CHAR': 'string',

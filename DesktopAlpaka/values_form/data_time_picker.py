@@ -1,5 +1,6 @@
+"""This is module for Data and time picking window"""
 import tkinter as tk
-from tkcalendar import *
+from tkcalendar import Calendar
 
 
 class DateTimePicker(tk.Toplevel):
@@ -17,7 +18,7 @@ class DateTimePicker(tk.Toplevel):
         # if self.option == 'DATETIME' or self.option == 'DATE':
         self.data_chooser()
 
-        if self.option == 'DATETIME' or self.option == 'TIME' or self.option == 'TIMESTAMP':
+        if self.option == ['DATETIME', 'TIME', 'TIMESTAMP']:
             self.time_chooser()
 
         if self.option == 'TIMESTAMP':
@@ -38,15 +39,15 @@ class DateTimePicker(tk.Toplevel):
         """This is method for initialising time choosing frame"""
         frame_time = tk.Frame(self)
         frame_time.pack(pady=10)
-        f = ('Times', 20)
+        font = ('Times', 20)
 
         minute = tk.Spinbox(frame_time, from_=0, to=23, wrap=True, textvariable=self.time[1],
-                            width=2, state="readonly", font=f, justify=tk.CENTER)
+                            width=2, state="readonly", font=font, justify=tk.CENTER)
         hours = tk.Spinbox(frame_time, from_=0, to=59, wrap=True, textvariable=self.time[0],
-                           font=f, width=2, justify=tk.CENTER)
+                           font=font, width=2, justify=tk.CENTER)
 
         seconds = tk.Spinbox(frame_time, from_=0, to=59, wrap=True, textvariable=self.time[2],
-                             width=2, font=f, justify=tk.CENTER)
+                             width=2, font=font, justify=tk.CENTER)
 
         minute.pack(side=tk.LEFT, fill=tk.X, expand=True)
         hours.pack(side=tk.LEFT, fill=tk.X, expand=True)
@@ -59,15 +60,15 @@ class DateTimePicker(tk.Toplevel):
         """This is method for initialising  days count frame"""
         frame_days = tk.Frame(self)
         frame_days.pack(pady=10)
-        f = ('Times', 20)
+        font = ('Times', 20)
 
         months = tk.Spinbox(frame_days, from_=0, to=12, wrap=True, textvariable=self.days[1],
-                            width=2, state="readonly", font=f, justify=tk.CENTER)
+                            width=2, state="readonly", font=font, justify=tk.CENTER)
         years = tk.Spinbox(frame_days, from_=0, to=99, wrap=True, textvariable=self.days[0],
-                           font=f, width=2, justify=tk.CENTER)
+                           font=font, width=2, justify=tk.CENTER)
 
         days = tk.Spinbox(frame_days, from_=0, to=31, wrap=True, textvariable=self.days[2],
-                          width=2, font=f, justify=tk.CENTER)
+                          width=2, font=font, justify=tk.CENTER)
 
         years.pack(side=tk.LEFT, fill=tk.X, expand=True)
         months.pack(side=tk.LEFT, fill=tk.X, expand=True)
@@ -109,5 +110,3 @@ class DateTimePicker(tk.Toplevel):
         print(res)
         self.func(res)
         self.destroy()
-
-

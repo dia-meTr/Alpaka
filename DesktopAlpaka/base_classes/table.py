@@ -1,3 +1,4 @@
+"""Module for representation of a table"""
 import tkinter as tk
 from tkinter import Frame
 from tkinter import ttk

@@ -4,7 +4,7 @@ import tkinter as tk
 from tkinter import messagebox
 from tabs.insert_components.insert_values_form import InsertValuesForm
 from tabs.tab import Tab
-from base_classes.Error import MySQLError
+from base_classes.error import MySQLError
 
 
 class InsertTab(Tab):  # pylint: disable=too-many-ancestors

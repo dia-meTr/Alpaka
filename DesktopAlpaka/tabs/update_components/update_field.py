@@ -1,9 +1,9 @@
 """This is module for fields class for updating purposes"""
 from values_form.field import Field
-from base_classes.Error import MySQLError
+from base_classes.error import MySQLError
 
 
-class UpdateField(Field): # pylint: disable=too-many-ancestors
+class UpdateField(Field):  # pylint: disable=too-many-ancestors
     """class for every field of table for updating purposes"""
 
     def get_value(self):

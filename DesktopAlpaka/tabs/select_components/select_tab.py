@@ -1,15 +1,14 @@
 """This module describes select tab class"""
 
 import tkinter as tk
-from tkinter import messagebox
-from tkinter import ttk
+from tkinter import ttk, messagebox
 import mysql.connector
 from my_sql import get_columns
 from tabs.filter.filter_data import Filter
 from tabs.select_components.sort_data import Sorter
 from tabs.tab import Tab
-from base_classes.Error import MySQLError
 from tabs.select_components.graphics.grafic_settings import GraphicSettings
+from base_classes.error import MySQLError
 
 
 class SelectTab(Tab):  # pylint: disable=too-many-ancestors
@@ -55,8 +54,9 @@ class SelectTab(Tab):  # pylint: disable=too-many-ancestors
         select_button.grid(row=0, column=1, sticky='es')
 
         graphic_button = tk.Button(self.m_space, text="Create graphic",
-                                   command=lambda: self.graphic.init_ui(self.filter_chooser.get_str(),
-                                                                        self.sort_block.get_query_piece()))
+                                   command=lambda: self.graphic.init_ui(
+                                       self.filter_chooser.get_str(),
+                                       self.sort_block.get_query_piece()))
         graphic_button.grid(row=0, column=2)
 
     def get_query(self):

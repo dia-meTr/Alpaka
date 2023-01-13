@@ -1,9 +1,10 @@
 """This is module for connection page"""
 import json
 import tkinter as tk
+import mysql.connector
 from tkinter import messagebox
 from my_sql import connect_to_bd, get_privileges
-import mysql.connector
+from base_classes.error import MySQLError
 
 
 class ConnectionPage(tk.Frame):
@@ -13,10 +14,10 @@ class ConnectionPage(tk.Frame):
         self.params = None
         self.new_params = None
         self.func = func
-        self.host = tk.StringVar()
-        self.user = tk.StringVar()
-        self.password = tk.StringVar()
-        self.database = tk.StringVar()
+        self.parameters = {'host': tk.StringVar(),
+                           'user': tk.StringVar(),
+                           'password': tk.StringVar(),
+                           'database': tk.StringVar()}
 
         self.get_params()
 
@@ -31,22 +32,22 @@ class ConnectionPage(tk.Frame):
         checking whether user have enough of rights
         """
         self.new_params = {
-            'host': self.host.get(),
-            'user': self.user.get(),
-            "password": self.password.get(),
-            "database": self.database.get()
+            'host': self.parameters['host'].get(),
+            'user': self.parameters['user'].get(),
+            "password": self.parameters['password'].get(),
+            "database": self.parameters['database'].get()
         }
 
         try:
-            db = connect_to_bd(self.new_params)
-            my_cursor = db[0]
+            database = connect_to_bd(self.new_params)
+            my_cursor = database[0]
             privileges = get_privileges(self.new_params['user'], my_cursor)
             my_cursor.close()
         except mysql.connector.errors.ProgrammingError as ex:
             print(ex.args)
             messagebox.showerror("Error", "Access denied")
             return
-        except Exception as ex:
+        except MySQLError as ex:
             print(ex)
             messagebox.showerror("Error", *ex.args)
             return
@@ -60,20 +61,28 @@ class ConnectionPage(tk.Frame):
         """
         This is methode for initialisation of UI
         """
-        tk.Label(self.space, text="Host", font=("Time", 18)).grid(row=0, column=0, padx=5, pady=5)
-        tk.Entry(self.space, textvariable=self.host, font=("Time", 18)).grid(row=0, column=1, padx=5, pady=5)
+        tk.Label(self.space, text="Host",
+                 font=("Time", 18)).grid(row=0, column=0, padx=5, pady=5)
+        tk.Entry(self.space, textvariable=self.parameters['host'],
+                 font=("Time", 18)).grid(row=0, column=1, padx=5, pady=5)
 
-        tk.Label(self.space, text="User", font=("Time", 18)).grid(row=1, column=0, padx=5, pady=5)
-        tk.Entry(self.space, textvariable=self.user, font=("Time", 18)).grid(row=1, column=1, padx=5, pady=5)
+        tk.Label(self.space, text="User",
+                 font=("Time", 18)).grid(row=1, column=0, padx=5, pady=5)
+        tk.Entry(self.space, textvariable=self.parameters['user'],
+                 font=("Time", 18)).grid(row=1, column=1, padx=5, pady=5)
 
-        tk.Label(self.space, text="Password", font=("Time", 18)).grid(row=2, column=0, padx=5, pady=5)
-        tk.Entry(self.space, textvariable=self.password, font=("Time", 18), show="*").grid(row=2, column=1,
-                                                                                           padx=5, pady=5)
+        tk.Label(self.space, text="Password",
+                 font=("Time", 18)).grid(row=2, column=0, padx=5, pady=5)
+        tk.Entry(self.space, textvariable=self.parameters['password'],
+                 font=("Time", 18), show="*").grid(row=2, column=1, padx=5, pady=5)
 
-        tk.Label(self.space, text="Database", font=("Time", 18)).grid(row=3, column=0, padx=5, pady=5)
-        tk.Entry(self.space, textvariable=self.database, font=("Time", 18)).grid(row=3, column=1, padx=5, pady=5)
+        tk.Label(self.space, text="Database",
+                 font=("Time", 18)).grid(row=3, column=0, padx=5, pady=5)
+        tk.Entry(self.space, textvariable=self.parameters['database'],
+                 font=("Time", 18)).grid(row=3, column=1, padx=5, pady=5)
 
-        button = tk.Button(self.space, text="Confirm", command=self.connect, height=2)
+        button = tk.Button(self.space, text="Confirm",
+                           command=self.connect, height=2)
         button.grid(row=5, column=1, columnspan=2, padx=20, pady=20)
 
     def get_params(self):
@@ -83,16 +92,16 @@ class ConnectionPage(tk.Frame):
         """
         filename = 'info.json'  # os.path.join(os.path.dirname(sys.executable), 'info.json')
 
-        with open(filename, 'r') as data:
+        with open(filename, 'r', encoding="utf-8") as data:
             self.params = json.load(data)
 
         are_params_empty = self.params['user'] == ''
 
         if not are_params_empty:
-            self.host.set(self.params['host'])
-            self.user.set(self.params['user'])
-            self.password.set(self.params['password'])
-            self.database.set(self.params['database'])
+            self.parameters['host'].set(self.params['host'])
+            self.parameters['user'].set(self.params['user'])
+            self.parameters['password'].set(self.params['password'])
+            self.parameters['database'].set(self.params['database'])
 
     def set_params(self):
         """
@@ -103,7 +112,7 @@ class ConnectionPage(tk.Frame):
         filename = '../info.json'  # os.path.join(os.path.dirname(sys.executable), 'info.json')
 
         # Writing to sample.json
-        with open(filename, "w") as outfile:
+        with open(filename, "w", encoding="utf-8") as outfile:
             outfile.write(json_params)
 
     def ask_to_save(self):

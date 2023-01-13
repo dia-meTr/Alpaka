@@ -1,8 +1,12 @@
+"""frequently used functions that perform database queries"""
+
 from mysql.connector import FieldType
 import mysql.connector
+from base_classes.error import MySQLError
 
 
 def connect_to_bd(params):
+    """This is function for connecting to BD"""
     mydb = mysql.connector.connect(
         host=params['host'],
         user=params['user'],
@@ -15,18 +19,21 @@ def connect_to_bd(params):
 
 
 def get_privileges(user, cursor):
+    """This is function for getting user's privileges"""
     try:
         cursor.execute(f"SELECT `Select_priv`, Insert_priv, Update_priv, Delete_priv "
                        f"FROM mysql.user WHERE `User`='{user}';")
         result = cursor.fetchall()
         print(result[0])
     except mysql.connector.errors.ProgrammingError:
-        raise Exception("It seems like you don't have enough rights to use this app")
+        raise MySQLError("It seems like you don't have enough rights to use this app")
 
     return result[0]
 
 
 def get_table_info(table, cursor):
+    """This is function for getting
+    information about a table"""
     cursor.execute(f"SHOW columns FROM `{table}`")
     res = cursor.fetchall()
 
@@ -43,9 +50,7 @@ def get_table_info(table, cursor):
 
 
 def get_relation(table, field_name, cursor):
-    """
-    function to get referenced columns
-    """
+    """This is function for getting referenced columns"""
     cursor.execute("SELECT `REFERENCED_TABLE_NAME`, `REFERENCED_COLUMN_NAME` "
                    "FROM `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE`"
                    f"WHERE `TABLE_NAME` = '{table}'  "
@@ -59,6 +64,8 @@ def get_relation(table, field_name, cursor):
 
 
 def get_tables(cursor):
+    """This function gets all tables
+    from BD and return a list of them"""
     cursor.execute("SHOW TABLES")
     result = cursor.fetchall()
     tables = [x[0] for x in result]
@@ -66,6 +73,8 @@ def get_tables(cursor):
 
 
 def get_columns(table, cursor):
+    """This function gets all columns
+    from a table and return a list of them"""
     columns = []
 
     # If table variable is not empty:

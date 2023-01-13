@@ -4,8 +4,8 @@ import tkinter as tk
 from tkinter import ttk
 from constants import type_groups
 from my_sql import get_relation
-from values_form.DateTimePicker import DateTimePicker
-from base_classes.Error import MySQLError
+from values_form.data_time_picker import DateTimePicker
+from base_classes.error import MySQLError
 
 
 class Field(tk.Frame):

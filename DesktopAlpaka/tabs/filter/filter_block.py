@@ -1,7 +1,7 @@
 """This is module for building a filter"""
 import tkinter as tk
 from tkinter import ttk
-from base_classes.Error import MySQLError
+from base_classes.error import MySQLError
 
 
 class FilterBlock(tk.Frame):

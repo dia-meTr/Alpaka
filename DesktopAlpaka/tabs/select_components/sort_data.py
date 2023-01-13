@@ -2,7 +2,7 @@
 import tkinter as tk
 from tkinter import ttk
 from my_sql import get_columns
-from base_classes.Error import MySQLError
+from base_classes.error import MySQLError
 
 
 class Sorter(tk.Frame):

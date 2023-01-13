@@ -4,9 +4,9 @@ import tkinter as tk
 from tkinter import messagebox
 from tabs.update_components.update_values_form import UpdateValuesForm
 from tabs.filter.filter_data import Filter
-from my_sql import get_columns
 from tabs.tab import Tab
-from base_classes.Error import MySQLError
+from my_sql import get_columns
+from base_classes.error import MySQLError
 
 
 class UpdateTab(Tab):  # pylint: disable=too-many-ancestors
@@ -16,7 +16,6 @@ class UpdateTab(Tab):  # pylint: disable=too-many-ancestors
     def __init__(self, root, my_cursor):
         super().__init__(root, my_cursor)
         self.new_values_form = None
-        self.chooser = None
 
         self.side_bar.init_ui([])
         self.init_ui()
@@ -41,7 +40,8 @@ class UpdateTab(Tab):  # pylint: disable=too-many-ancestors
         self.m_space.columnconfigure(1, weight=1, uniform='column')
         self.m_space.rowconfigure(1, weight=5, uniform='row')
 
-        self.chooser = Filter(where_panel, get_columns(self.table.get(), self.cursor), self.update_scroll_region)
+        self.chooser = Filter(where_panel, get_columns(self.table.get(), self.cursor),
+                              self.update_scroll_region)
         self.chooser.init_ui()
         self.chooser.grid(pady=5, padx=5)
 

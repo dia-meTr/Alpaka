@@ -1,3 +1,5 @@
+"""Custom error implementation"""
+
 
 class MySQLError(Exception):
     """Exception raised for errors with SQL request
