@@ -1,8 +1,6 @@
-"""
-This is module for building a filter
-"""
+"""This is module for building a filter"""
 import tkinter as tk
-from base_classes.filter.filter_block import FilterBlock
+from tabs.filter.filter_block import FilterBlock
 
 
 class FiltersHolder(tk.Frame):

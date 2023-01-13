@@ -4,7 +4,7 @@ import tkinter as tk
 from tkinter import ttk
 from constants import type_groups
 from my_sql import get_relation
-from base_classes.DateTimePicker import DateTimePicker
+from values_form.DateTimePicker import DateTimePicker
 from base_classes.Error import MySQLError
 
 
@@ -71,7 +71,8 @@ class Field(tk.Frame):
             elif self.group_type == 'float':
                 value = float(value)
         except ValueError:
-            raise MySQLError(f"Sorry, column '{self.field_name}' have to be {self.group_type}") from ValueError
+            raise MySQLError(f"Sorry, column '{self.field_name}' "
+                             f"have to be {self.group_type}") from ValueError
 
         return value
 

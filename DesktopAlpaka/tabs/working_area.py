@@ -1,14 +1,14 @@
 """
 This module describes working area of an app
-Area, where five tabs are created and theirs classes are caled
+Area, where five tabs are created and theirs classes are called
 """
 from tkinter import ttk
 import tkinter as tk
-from insert_components.insert_tab import InsertTab
-from select_components.select_tab import SelectTab
-from update_components.update_tab import UpdateTab
-from delete_components.delete_tab import DeleteTab
-from actions_tab import ActionsTab
+from tabs.insert_components.insert_tab import InsertTab
+from tabs.select_components.select_tab import SelectTab
+from tabs.update_components.update_tab import UpdateTab
+from tabs.delete_components.delete_tab import DeleteTab
+from tabs.actions_tab import ActionsTab
 
 
 class WorkingArea(tk.Frame):

@@ -3,8 +3,8 @@
 import tkinter as tk
 from tkinter import messagebox
 from my_sql import get_columns
-from base_classes.filter.filter_data import Filter
-from base_classes.tab import Tab
+from tabs.filter.filter_data import Filter
+from tabs.tab import Tab
 from base_classes.Error import MySQLError
 
 
@@ -42,25 +42,6 @@ class DeleteTab(Tab):  # pylint: disable=too-many-ancestors
 
         self.chooser.refresh(columns)
         self.side_bar.init_ui(columns)
-
-    def check(self):
-        try:
-            table = self.get_table()
-            columns = self.side_bar.get_fields()
-            sql_request = f"SELECT {', '.join(columns)} " \
-                          f"from `{table}` " + self.chooser.get_str()
-        except MySQLError as e:
-            print(e.args)
-            messagebox.showerror("Error", e.args[0])
-            return
-
-        # Execute SQL request
-        print(sql_request)
-        self.cursor.execute(sql_request)
-        result = self.cursor.fetchall()
-
-        # Build a table
-        self.table_view.make_view(columns, result)
 
     def get_query(self):
         """

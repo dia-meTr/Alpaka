@@ -2,8 +2,8 @@
 
 import tkinter as tk
 from tkinter import messagebox
-from insert_components.insert_values_form import InsertValuesForm
-from base_classes.tab import Tab
+from tabs.insert_components.insert_values_form import InsertValuesForm
+from tabs.tab import Tab
 from base_classes.Error import MySQLError
 
 

@@ -1,4 +1,4 @@
-"""This is module for describing sort pannel"""
+"""This is module for describing sort panel"""
 import tkinter as tk
 from tkinter import ttk
 from my_sql import get_columns
@@ -6,9 +6,7 @@ from base_classes.Error import MySQLError
 
 
 class Sorter(tk.Frame):
-    """
-    This is class for sorting panel
-    """
+    """This is class for sorting panel"""
 
     def __init__(self, root, my_cursor, table):
         super().__init__(root)

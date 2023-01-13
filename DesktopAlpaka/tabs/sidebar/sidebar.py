@@ -1,8 +1,15 @@
+"""
+This is module for left sidebar, where user
+can select which fields to display in a table
+"""
 import tkinter as tk
 from base_classes.Error import MySQLError
 
 
 class Sidebar(tk.Frame):
+    """
+    This is class for left sidebar
+    """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.ch_all = None
@@ -10,6 +17,7 @@ class Sidebar(tk.Frame):
         self.ch_buttons = {}
 
     def init_ui(self, columns):
+        """This is method for initialising UI of a sidebar"""
         # Clear old widgets
         self.clear()
         self.ch_buttons = {}
@@ -31,6 +39,10 @@ class Sidebar(tk.Frame):
             self.ch_buttons[column] = (ch, var)
 
     def click_all(self):
+        """
+        This is method for selecting all the check buttons
+        Called when "All" checkbutton is clicked
+        """
         if self.var_all.get():
             for ch in self.ch_buttons.values():
                 # Make all check buttons selected
@@ -41,6 +53,10 @@ class Sidebar(tk.Frame):
                 ch[1].set(0)
 
     def get_fields(self):
+        """
+        This is method for list with all
+        selected fields
+        """
         res = []
         for key, value in self.ch_buttons.items():
             if value[1].get():
@@ -50,6 +66,10 @@ class Sidebar(tk.Frame):
         return res
 
     def clear(self):
+        """
+        This method clears delete all
+        widgets in a sidebar
+        """
         # destroy all widgets from frame
         for widget in self.winfo_children():
             widget.destroy()

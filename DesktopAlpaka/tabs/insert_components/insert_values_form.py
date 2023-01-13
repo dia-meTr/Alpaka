@@ -1,5 +1,9 @@
-from insert_components.insert_field import InsertField
-from base_classes.values_form import ValuesForm
+"""
+This is module for overriding
+ValuesForm for Insert needs
+"""
+from tabs.insert_components.insert_field import InsertField
+from values_form.values_form import ValuesForm
 
 
 class InsertValuesForm(ValuesForm):  # pylint: disable=too-many-ancestors

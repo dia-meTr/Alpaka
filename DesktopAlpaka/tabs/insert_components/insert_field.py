@@ -1,10 +1,10 @@
 """This is module for fields class for inserting purposes"""
-from base_classes.field import Field
+from values_form.field import Field
 from base_classes.Error import MySQLError
 
 
 class InsertField(Field):  # pylint: disable=too-many-ancestors
-    """class for every field of table"""
+    """class for every field of table for inserting purposes"""
 
     def get_value(self):
         """This is method for getting a pair of field name and its value"""

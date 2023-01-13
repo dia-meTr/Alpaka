@@ -2,7 +2,7 @@
 
 import tkinter as tk
 from tkinter import ttk, messagebox
-from sidebar.sidebar import Sidebar
+from tabs.sidebar.sidebar import Sidebar
 from base_classes.table import Table
 from my_sql import get_tables
 from base_classes.Error import MySQLError
@@ -19,6 +19,7 @@ class Tab(tk.Frame):
     def __init__(self, root, my_cursor):
         super().__init__(root)
         self.head = None
+        self.chooser = None
         self.cursor = my_cursor
         self.tables = get_tables(self.cursor)
         self.table = tk.StringVar()
@@ -96,7 +97,9 @@ class Tab(tk.Frame):
             table = self.get_table()
             columns = self.side_bar.get_fields()
             sql_request = f"SELECT {', '.join(columns)} " \
-                          f"from `{table}`;"
+                          f"from `{table}` "
+            if self.chooser is not None:
+                sql_request += self.chooser.get_str()
         except Exception as e:
             print(e.args)
             messagebox.showerror("Error", e.args[0])

@@ -1,10 +1,15 @@
-from tkinter import ttk
+"""
+This is module for value form class
+It creates a form where user have to
+enter new values for table
+"""
+from values_form.field import Field
+import tkinter as tk
 from tkinter import messagebox
-from base_classes.field import Field
 from my_sql import get_table_info
 
 
-class ValuesForm(ttk.Frame):
+class ValuesForm(tk.Frame):
     """
     This is class for values form that is used in Insert and Update tabs
     """

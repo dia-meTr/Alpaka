@@ -3,9 +3,11 @@ import json
 import tkinter as tk
 from tkinter import messagebox
 import os
+from tabs.select_components.graphics.graphic import Graphic
 
 
 def clear_connect_info():
+    """This is methode for clearing parameters inside a json file"""
     params = {
         "host": "",
         "user": "",
@@ -19,12 +21,6 @@ def clear_connect_info():
     # Writing to sample.json
     with open("info.json", "w") as outfile:
         outfile.write(json_params)
-
-
-def graph():
-    """This is method for creating graph"""
-    print("New Graphic")
-    messagebox.showinfo("Done", "Graphic Created")
 
 
 class ActionsTab(tk.Frame):
@@ -60,7 +56,7 @@ class ActionsTab(tk.Frame):
         button_revert = tk.Button(buttons, text="Revert changes", command=self.revert)
         button_revert.grid(row=1, pady=5)
 
-        button_graph = tk.Button(buttons, text="Create graphic", command=graph)
+        button_graph = tk.Button(buttons, text="Create graphic", command=self.graph)
         button_graph.grid(row=2, pady=5)
 
         button_clear_info = tk.Button(buttons, text="Clear connection info", command=clear_connect_info)
@@ -75,3 +71,10 @@ class ActionsTab(tk.Frame):
         """This is method for reverting changes"""
         self.conn.rollback()
         messagebox.showinfo("Done", "Changes Revert")
+
+    def graph(self):
+        """This is method for creating graph"""
+        g = Graphic(self.cursor)
+        g.draw()
+        print("New Graphic")
+        messagebox.showinfo("Done", "Graphic Created")

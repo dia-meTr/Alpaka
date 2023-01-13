@@ -1,6 +1,6 @@
 import tkinter as tk
-from working_area import WorkingArea
-from connection_tab import ConnectionTab
+from tabs.working_area import WorkingArea
+from tabs.connection_page import ConnectionPage
 from my_sql import connect_to_bd
 
 
@@ -20,7 +20,7 @@ if __name__ == '__main__':
     mydb = None
     app = tk.Tk()
     app.geometry("1100x600")
-    window = ConnectionTab(app, connect)
+    window = ConnectionPage(app, connect)
     window.pack(expand=True)
 
     app.mainloop()
