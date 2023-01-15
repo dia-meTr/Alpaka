@@ -5,7 +5,7 @@ from tkinter import ttk
 from constants import type_groups
 from my_sql import get_relation
 from values_form_components.data_time_picker import DateTimePicker
-from base_classes.error import MySQLError
+from errors.error import MySQLError
 
 
 class Field(tk.Frame):

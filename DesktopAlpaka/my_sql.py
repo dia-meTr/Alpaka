@@ -2,7 +2,7 @@
 
 import mysql.connector
 from mysql.connector import FieldType
-from base_classes.error import MySQLError
+from errors.error import MySQLError
 
 
 def connect_to_bd(params):

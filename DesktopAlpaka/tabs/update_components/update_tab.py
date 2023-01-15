@@ -3,10 +3,10 @@
 import tkinter as tk
 from tkinter import messagebox
 from tabs.update_components.update_values_form import UpdateValuesForm
-from tabs.filter.filter_data import Filter
 from tabs.tab import Tab
+from filter.filter_data import Filter
 from my_sql import get_columns
-from base_classes.error import MySQLError
+from errors.error import MySQLError
 
 
 class UpdateTab(Tab):  # pylint: disable=too-many-ancestors

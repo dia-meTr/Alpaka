@@ -3,9 +3,9 @@
 import tkinter as tk
 from tkinter import messagebox
 from my_sql import get_columns
-from tabs.filter.filter_data import Filter
+from filter.filter_data import Filter
 from tabs.tab import Tab
-from base_classes.error import MySQLError
+from errors.error import MySQLError
 
 
 class DeleteTab(Tab):  # pylint: disable=too-many-ancestors

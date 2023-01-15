@@ -2,10 +2,10 @@
 
 import tkinter as tk
 from tkinter import ttk, messagebox
-from tabs.sidebar.sidebar import Sidebar
+from page_components.sidebar import Sidebar
 from my_sql import get_tables
-from base_classes.table import Table
-from base_classes.error import MySQLError
+from page_components.table import Table
+from errors.error import MySQLError
 
 
 class Tab(tk.Frame):

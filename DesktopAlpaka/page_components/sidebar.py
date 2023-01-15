@@ -3,7 +3,7 @@ This is module for left sidebar, where user
 can select which fields to display in a table
 """
 import tkinter as tk
-from base_classes.error import MySQLError
+from errors.error import MySQLError
 
 
 class Sidebar(tk.Frame):

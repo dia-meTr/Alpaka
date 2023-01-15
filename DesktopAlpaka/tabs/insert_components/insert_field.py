@@ -1,6 +1,6 @@
 """This is module for fields class for inserting purposes"""
 from values_form_components.field import Field
-from base_classes.error import MySQLError
+from errors.error import MySQLError
 
 
 class InsertField(Field):  # pylint: disable=too-many-ancestors

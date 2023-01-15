@@ -1,6 +1,6 @@
 """This is module for fields class for updating purposes"""
 from values_form_components.field import Field
-from base_classes.error import MySQLError
+from errors.error import MySQLError
 
 
 class UpdateField(Field):  # pylint: disable=too-many-ancestors

@@ -4,11 +4,11 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 import mysql.connector
 from my_sql import get_columns
-from tabs.filter.filter_data import Filter
 from tabs.select_components.sort_data import Sorter
 from tabs.tab import Tab
 from tabs.select_components.graphics.grafic_settings import GraphicSettings
-from base_classes.error import MySQLError
+from filter.filter_data import Filter
+from errors.error import MySQLError
 
 
 class SelectTab(Tab):  # pylint: disable=too-many-ancestors

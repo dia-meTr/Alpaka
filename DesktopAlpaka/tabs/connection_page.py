@@ -4,7 +4,7 @@ import tkinter as tk
 from tkinter import messagebox
 import mysql.connector
 from my_sql import connect_to_bd, get_privileges
-from base_classes.error import MySQLError
+from errors.error import MySQLError
 
 
 class ConnectionPage(tk.Frame):
